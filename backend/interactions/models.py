@@ -6,7 +6,13 @@ class Like(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        db_table = "Likes"
+
 class TypeLike(models.Model):
-    tweet_id = models.AutoField(primary_key=True, max_digits= 1)
+    tweet_id = models.AutoField(primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "Type_Likes"

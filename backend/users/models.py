@@ -10,3 +10,6 @@ class User(models.Model):
     birh_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "Users"
