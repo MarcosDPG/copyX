@@ -9,9 +9,14 @@ def home(request):
     return render(request, "base.html", {"content_template": "partials/home.html"})  # Carga la página completa
 
 def profile(request):
+    user_data = {
+        "name": "elnombredelusuarioaca",
+        "username":"elusernameaca",
+        "posts_count": 0,
+    }
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-        return render(request, "partials/profile.html")
-    return render(request, "base.html", {"content_template": "partials/profile.html"})
+        return render(request, "partials/profile.html", {**user_data})
+    return render(request, "base.html", {"content_template": "partials/profile.html", **user_data})
 
 def settings_view(request):  
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
