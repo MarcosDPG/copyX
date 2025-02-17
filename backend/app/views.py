@@ -18,7 +18,19 @@ def profile(request):
         return render(request, "partials/profile.html", {**user_data})
     return render(request, "base.html", {"content_template": "partials/profile.html", **user_data})
 
-def settings_view(request):  
+def settings_view(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return render(request, "partials/settings.html")
     return render(request, "base.html", {"content_template": "partials/settings.html"})
+
+def settings_partial(request, option):
+    user_data = {
+        "name": "elnombredelusuarioaca",
+        "username":"elusernameaca",
+        "birth": [2,3,2004], # dia - mes - año
+    }
+    if option == "account_options":
+        return render(request, "partials/account_options.html", {**user_data})
+    elif option == "preferences_options":
+        return render(request, "partials/preferences_options.html", {**user_data})
+    return None

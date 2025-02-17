@@ -1,10 +1,10 @@
 from django.urls import path
-from app.views import base, home, profile, settings_view
-
+from app.views import base, home, profile, settings_view, settings_partial
 urlpatterns = [
     path("", base),
     path("home/", home, name="home"),
     path("profile/", profile, name="profile"),
     path("settings/", settings_view, name="settings"),
-    path("compose/post/", home, name="compose_post")
+    path("compose/post/", home, name="compose_post"),
+    path('settings/<str:option>/', settings_partial, name='settings_partial'),
 ]
