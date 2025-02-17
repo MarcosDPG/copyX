@@ -45,10 +45,6 @@ body {
     align-items: center;
 }
 
-.sidebar ul li a i {
-    margin-right: 10px;
-}
-
 .sidebar ul li:hover a {
     font-weight: 500;
 }
