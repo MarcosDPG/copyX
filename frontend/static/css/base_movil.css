@@ -31,6 +31,10 @@
     .btn:has(> .icon) span {
         display: none;
     }
+
+    #my_account {
+        margin-bottom: 60px
+    }
     
     #my_account div #name {
         display: none;

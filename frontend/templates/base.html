@@ -50,7 +50,7 @@
                     <span>Post</span>
                 </div>
             </div>
-            <div id="my_account">
+            <div id="my_account" onclick="javascript:document.getElementById('close_sesion').classList.toggle('active')">
                 <div class="user_image">
                     {% include 'icons/profile.html' %}
                 </div>
@@ -64,6 +64,10 @@
         <main id="content">
             {% include content_template %}
         </main>
+        <div id="close_sesion">
+            <p>Cerrar sesión</p>
+            <p onclick="javascript:document.getElementById('close_sesion').classList.toggle('active')">X</p>
+        </div>
         <div id="cobertor">
             <div class="divCard">
                 <section onclick="javascript:history.back();">
@@ -73,7 +77,6 @@
             </div>
         </div>
     </div>
-
 </body>
 {% block scripts %}{% endblock %}
 </html>
