@@ -13,6 +13,9 @@ body {
 }
 
 .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 200px;
     background-color: black;
     padding: 20px;
@@ -24,14 +27,14 @@ body {
     padding: 0;
 }
 
-.sidebar ul li {
+.sidebar ul li, .btn, #my_account {
     border-radius: 20px;
     margin: 10px 0;
     padding: 5px 10px;
 }
 
 .sidebar ul li:hover {
-    background-color: #222222;
+    background-color: rgb(52, 52, 52);
     cursor: pointer;
 }
 
@@ -60,11 +63,76 @@ main {
     padding-left: 15px;
 }
 
+.sidebar .btn {
+    width: 180px;
+    padding: 10px;
+}
+
 .btn {
     background-color: white;
     color: black;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    justify-content: space-evenly;
+}
+
+.btn .icon {
+    display: none;
 }
 
 .btn:hover {
     cursor: pointer;
+}
+
+.user_image {
+    min-width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background-color: rgb(182, 182, 182);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.user_image svg {
+    height: auto;
+    width: 35px;
+    fill: rgb(52, 51, 58);
+}
+
+.user_image svg circle, .user_image svg path {
+    stroke: rgb(52, 51, 58);
+}
+
+#my_account {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-content: center;
+}
+
+#my_account:hover {
+    background-color: rgb(52, 52, 52);
+    cursor: pointer;
+}
+
+#my_account div #name {
+    color: white;
+    font-size: smaller;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-bottom: 7px;
+}
+
+#my_account div p {
+    margin: 0px;
+    margin-left: 5px;
+    color: gray;
+    font-size: x-small;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
