@@ -13,12 +13,30 @@
     <div class="container">
         <nav class="sidebar">
             <ul>
-                <li><a href="/" class="nav-link">
-                    <i class="fa-solid fa-house"></i> Home</a></li>
-                <li><a href="/profile" class="nav-link">
-                    <i class="fas fa-user"></i> Profile</a></li>
-                <li><a href="/settings" class="nav-link">
-                    <i class="fas fa-cog"></i> Settings</a></li>
+                <li>
+                    <a href="/" class="nav-link">
+                        {% include 'icons/home.html' %}
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/explore" class="nav-link">
+                        {% include 'icons/explore.html' %}
+                        <span>Explorar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/profile" class="nav-link">
+                        {% include 'icons/profile.html' %}
+                        <span>Perfil</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/settings" class="nav-link">
+                        {% include 'icons/settings.html' %}
+                        <span>Configuraciones</span>
+                    </a>
+                </li>
             </ul>
         </nav>
 
