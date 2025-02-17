@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>copyX</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <script defer src="{% static 'js/base.js' %}"></script>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="sidebar">
+            <ul>
+                <li><a href="/" class="nav-link">
+                    <i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="/profile" class="nav-link">
+                    <i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="/settings" class="nav-link">
+                    <i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+
+        <main id="content">
+            {% include content_template %}
+        </main>
+    </div>
+
+</body>
+</html>
