@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ../frontend /app/frontend
 EXPOSE 8000
 RUN chmod +x django.sh
-CMD ["django.sh"]
+CMD ["sh","./django.sh"]
