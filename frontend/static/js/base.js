@@ -1,12 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    const textarea = document.querySelector(".post_compose_container .textarea_container textarea");
-
-    textarea.addEventListener("input", function () {
-        this.style.height = "auto";
-        this.style.height = (this.scrollHeight) + "px";
-    });
-
     document.querySelectorAll(".nav-link").forEach(link => {
         link.addEventListener("click", function (e) {
             e.preventDefault();
@@ -44,11 +37,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 changeIcon(location.pathname);
             });
     });
-
     changeIcon(window.location.pathname);
 });
 
+function activeTextAreaPostCompose() {
+    try {
+        document.querySelectorAll(".post_compose_container .textarea_container textarea").forEach(area => {
+            area.addEventListener("input", function () {
+                this.style.height = "auto";
+                this.style.height = (this.scrollHeight) + "px";
+            });
+        });
+    } catch (error) {}
+}
+
+function activeHomeMenuOptions() {
+    document.querySelectorAll(".option_home_menu").forEach(option => {
+        option.addEventListener("click", function () {
+            console.log(this.name)
+            document.querySelectorAll(".option_home_menu").forEach(option =>{
+                option.classList.remove("selected");
+            })
+            this.classList.add("selected");
+        });
+    });
+}
+
 function changeIcon(path) {
+    activeTextAreaPostCompose();
+    activeHomeMenuOptions();
     if (path.endsWith("/") && path.length > 1) {
         path = path.slice(0, -1);
     }
