@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>copyX</title>
+    {% load static %}
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/logo_dark.png' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base_movil.css' %}">
+    <script defer src="{% static 'js/base.js' %}"></script>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="sidebar">
+            <div>
+                <img style="margin-bottom: 10px;" src="{% static 'images/logo_dark.png' %}" height="40px">
+                <ul>
+                    <li>
+                        <a href="/" class="nav-link">
+                            {% include 'icons/home.html' %}
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/explore" class="nav-link">
+                            {% include 'icons/explore.html' %}
+                            <span>Explorar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/profile" class="nav-link">
+                            {% include 'icons/profile.html' %}
+                            <span>Perfil</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/settings" class="nav-link">
+                            {% include 'icons/settings.html' %}
+                            <span>Configuraciones</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="btn" onclick="javascript:composePost(true);">
+                    <div class="icon">
+                        {% include 'icons/pen.html' %}
+                    </div>
+                    <span>Post</span>
+                </div>
+            </div>
+            <div id="my_account">
+                <div class="user_image">
+                    {% include 'icons/profile.html' %}
+                </div>
+                <div style="overflow: hidden;">
+                    <p id="name">Minombrecompletosinespacios</p>
+                    <p>@<span id="username">minombredeusuario</span></p>
+                </div>
+            </div>
+        </nav>
+
+        <main id="content">
+            {% include content_template %}
+        </main>
+        <div id="cobertor">
+            <div class="divCard">
+                <section onclick="javascript:history.back();" style="cursor: pointer; color: white;">
+                    <span>X</span>
+                </section>
+                {% include 'partials/post_compose.html' %}
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
