@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     "interactions",
     "publications",
     "users",
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
