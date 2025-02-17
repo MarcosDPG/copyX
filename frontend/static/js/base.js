@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+    const textarea = document.querySelector(".post_compose_container .textarea_container textarea");
+
+    textarea.addEventListener("input", function () {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
+    });
+
     document.querySelectorAll(".nav-link").forEach(link => {
         link.addEventListener("click", function (e) {
             e.preventDefault();

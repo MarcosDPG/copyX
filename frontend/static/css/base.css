@@ -136,3 +136,84 @@ main {
     white-space: nowrap;
     overflow: hidden;
 }
+
+.post_compose_container {
+    margin: 30px 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.post_compose_container .user_image_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.post_compose_container .textarea_container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: calc(100% - 160px);
+    margin: 0px 60px;
+}
+
+.post_compose_container .textarea_container textarea {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: white;
+    resize: none;
+    overflow: hidden;
+    min-height: 40px;
+    font-size: 18px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid grey;
+}
+
+.post_compose_container .textarea_container textarea:focus {
+    outline: none;
+}
+
+.post_compose_container .textarea_container .btn {
+    padding: 5px 25px;
+}
+
+/* HOME CSS */
+
+.home_menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    border-bottom: 1px solid grey;
+}
+
+.option_home_menu {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding-top: 10px;
+    width: 100%;
+}
+
+.option_home_menu:hover {
+    background-color: rgb(52, 52, 52);
+    cursor: pointer;
+}
+
+.option_home_menu p {
+    padding: 15px 0px;
+    margin: 0px;
+}
+
+.option_home_menu p.selected {
+    border-bottom: 3px solid rgb(0, 132, 255);
+}
+
+#post_container {
+    border-top: 1px solid grey;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
