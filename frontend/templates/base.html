@@ -8,6 +8,7 @@
     <link rel="icon" type="image/svg+xml" href="{% static 'images/logo_dark.png' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/base_movil.css' %}">
+    {% block styles %}{% endblock %}
     <script defer src="{% static 'js/base.js' %}"></script>
 </head>
 <body>
@@ -65,7 +66,7 @@
         </main>
         <div id="cobertor">
             <div class="divCard">
-                <section onclick="javascript:history.back();" style="cursor: pointer; color: white;">
+                <section onclick="javascript:history.back();">
                     <span>X</span>
                 </section>
                 {% include 'partials/post_compose.html' %}
@@ -74,4 +75,5 @@
     </div>
 
 </body>
+{% block scripts %}{% endblock %}
 </html>

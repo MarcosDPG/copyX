@@ -77,6 +77,17 @@ function activeTextAreaPostCompose() {
 function activeHomeMenuOptions() {
     document.querySelectorAll(".option_home_menu").forEach(option => {
         option.addEventListener("click", function () {
+            let p = location.pathname;
+            if (p.endsWith("/") && p.length > 1) {
+                p = p.slice(0, -1);
+            }
+            switch (p) {
+                case "/settings":
+                    loadSettingsPartial(this.getAttribute("data-target"))
+                    break;
+                default:
+                    break;
+            }
             console.log(this.name)
             document.querySelectorAll(".option_home_menu").forEach(option =>{
                 option.classList.remove("selected");

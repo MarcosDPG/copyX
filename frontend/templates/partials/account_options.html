@@ -1,0 +1,52 @@
+<div class="column_menu_option" onclick="javascript:toggleSelection(this);">
+    <p>Cambiar informacion de cuenta</p>
+    <div class="content">
+        <div class="column_menu_option" onclick="javascript:toggleSelection(this);">
+            <p>Editar nombre</p>
+            <div class="content">
+                <form>
+                    <input type="text" value="{{ name }}">
+                    <button type="submit" class="btn">Guardar</button>
+                </form>
+            </div>
+        </div>
+        <div class="column_menu_option" onclick="javascript:toggleSelection(this);">
+            <p>Editar fecha de nacimiento</p>
+            <div class="content">
+                <form>
+                    <p>dia</p>
+                    <input type="number" value="{{ birth.0 }}">
+                    <p>mes</p>
+                    <input type="number" value="{{ birth.1 }}">
+                    <p>año</p>
+                    <input type="number" value="{{ birth.2 }}">
+                    <button type="submit" class="btn">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="column_menu_option" onclick="javascript:toggleSelection(this);">
+    <p>Cambiar contraseña</p>
+    <div class="content">
+        <form>
+            <p>contraseña actual</p>
+            <input type="password">
+            <p>nueva contraseña</p>
+            <input type="password">
+            <p>confirmar constraseña</p>
+            <input type="password">
+            <button type="submit" class="btn">Guardar</button>
+        </form>
+    </div>
+</div>
+<div class="column_menu_option" onclick="javascript:toggleSelection(this);">
+    <p>Eliminar cuenta</p>
+    <div class="content">
+        <form>
+            <p>Escribe tu contraseña</p>
+            <input type="password">
+            <button type="submit" class="btn">Eliminar cuenta</button>
+        </form>
+    </div>
+</div>

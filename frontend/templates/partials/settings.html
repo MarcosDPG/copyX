@@ -1,2 +1,23 @@
-<h2>Configuración</h2>
-<p>Aquí puedes modificar tu configuración.</p>
+{% load static %}
+<div class="settings">
+    <div style="width: 100%; border-bottom: 1px solid grey;">
+        <p style="padding: 5px 10px; font-size: xx-large;">Configuraciones</p>
+    </div>
+    <div class="home_menu">
+        <div class="option_home_menu selected" data-target="account_options">
+            <p>Account</p>
+        </div>
+        <div class="option_home_menu" data-target="preferences_options">
+            <p>Preferences</p>
+        </div>
+    </div>
+    <div class="column_menu">
+        {% include 'partials/account_options.html' %}
+    </div>
+</div>
+{% block scripts %}
+    <script src="{% static 'js/settings.js' %}"></script>
+{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/settings.css' %}">
+{% endblock %}
