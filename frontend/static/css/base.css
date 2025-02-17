@@ -176,6 +176,49 @@ main {
     padding: 5px 25px;
 }
 
+#cobertor {
+    background-color: rgba(125, 125, 125, 0.3);
+    position: fixed;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    display: none;
+}
+#cobertor.active {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#cobertor .divCard {
+    margin-top: 8%;
+    border-radius: 20px;
+    background-color: black;
+    min-width: 35%;
+    width: 500px;
+    max-width: 80%;
+    max-height: 75%;
+}
+
+#cobertor .divCard section {
+    color: white;
+    padding: 10px 0px;
+    border-bottom: 1px solid grey;
+}
+
+#cobertor .divCard section span {
+    margin: 15px
+}
+
+#cobertor .divCard section span:hover {
+    cursor: pointer;
+}
+
+#cobertor .post_compose_container {
+    max-height: 60vh;
+}
+
 /* HOME CSS */
 
 .home_menu {

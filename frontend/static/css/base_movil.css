@@ -39,4 +39,10 @@
     #my_account div p {
         display: none;
     }
+
+    .post_compose_container .textarea_container {
+        margin: 0px 15px;
+        width: calc(100% - 70px);
+    }
+
 }

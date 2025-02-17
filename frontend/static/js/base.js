@@ -4,7 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
         link.addEventListener("click", function (e) {
             e.preventDefault();
             let url = this.getAttribute("href");
-
+            if (url.endsWith("/") && url.length > 1) {
+                url = url.slice(0, -1);
+            }
             if (url == "/") {
                 url = "/home";
             }
@@ -27,15 +29,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.addEventListener("popstate", function () {
         let p = location.pathname;
-        if (p == "/") {
-            p = "/home";
+        if (p.endsWith("/") && p.length > 1) {
+            p = p.slice(0, -1);
         }
-        fetch(p, { headers: { "X-Requested-With": "XMLHttpRequest" } })
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById("content").innerHTML = html;
-                changeIcon(location.pathname);
-            });
+        if (p == "/compose/post") {
+            composePost(false);
+        } else {
+            closeComposePost();
+            if (p == "/") {
+                p = "/home";
+            }
+            fetch(p, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById("content").innerHTML = html;
+                    changeIcon(location.pathname);
+                });
+        }
     });
     changeIcon(window.location.pathname);
 });
@@ -48,6 +58,19 @@ function activeTextAreaPostCompose() {
                 this.style.height = (this.scrollHeight) + "px";
             });
         });
+
+        document.querySelectorAll(".textarea_container").forEach(container => {
+            container.addEventListener("submit", function (e) {
+                e.preventDefault();
+                let text = this.querySelector("textarea").value.trim();
+            
+                if (text) {
+                    console.log("Publicando:", text);
+                    // TODO realizar fecth y publicarlo
+                }
+            });
+        });
+
     } catch (error) {}
 }
 
@@ -69,7 +92,11 @@ function changeIcon(path) {
     if (path.endsWith("/") && path.length > 1) {
         path = path.slice(0, -1);
     }
-    if (path == "/home" || path == "/home/") {
+    if (path == "/compose/post") {
+        history.pushState(null,"home","/");
+        composePost(true);
+    }
+    if (path == "/home" || path == "/compose/post") {
         path = "/";
     }
     document.querySelectorAll(".icon_menu").forEach(icon => icon.setAttribute("fill", "none"));
@@ -94,4 +121,17 @@ function isSamePath(url1, url2) {
         url2="/"
     }
     return url1 !== url2;
+}
+
+function composePost(bool) {
+    document.getElementById("cobertor").classList.add("active");
+    if(bool) {
+        history.pushState(null, '', '/compose/post');
+        console.log("si");
+    }
+}
+
+function closeComposePost() {
+    document.getElementById("cobertor").querySelector("textarea").value = "";
+    document.getElementById("cobertor").classList.remove("active");
 }

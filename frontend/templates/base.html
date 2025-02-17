@@ -42,7 +42,7 @@
                         </a>
                     </li>
                 </ul>
-                <div class="btn">
+                <div class="btn" onclick="javascript:composePost(true);">
                     <div class="icon">
                         {% include 'icons/pen.html' %}
                     </div>
@@ -63,6 +63,14 @@
         <main id="content">
             {% include content_template %}
         </main>
+        <div id="cobertor">
+            <div class="divCard">
+                <section onclick="javascript:history.back();" style="cursor: pointer; color: white;">
+                    <span>X</span>
+                </section>
+                {% include 'partials/post_compose.html' %}
+            </div>
+        </div>
     </div>
 
 </body>
