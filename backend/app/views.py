@@ -18,6 +18,11 @@ def profile(request):
         return render(request, "partials/profile.html", {**user_data})
     return render(request, "base.html", {"content_template": "partials/profile.html", **user_data})
 
+def search_view(request):
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return render(request, "partials/search.html")
+    return render(request, "base.html", {"content_template": "partials/search.html"})
+
 def settings_view(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return render(request, "partials/settings.html")
