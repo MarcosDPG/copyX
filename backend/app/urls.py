@@ -1,5 +1,5 @@
 from django.urls import path, include
-from app.views import base, home, profile, settings_view, settings_partial
+from app.views import base, home, profile, settings_view, settings_partial, search_view
 urlpatterns = [
     path("", base),
     path("home/", home, name="home"),
