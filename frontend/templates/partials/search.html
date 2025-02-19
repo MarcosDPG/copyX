@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <link rel="stylesheet" type="text/css" href="search.css">
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   {% load static %}
+   <link rel="stylesheet" href="{% static 'css/search.css' %}">
 </head>
 
 <body>
-   <div class="search">
+   <div class="search-container">
       <form method="get" id="search-form">
          <fieldset>
-            <input type="text" id="search-input" placeholder="search"  />
-            <input class="explore" type="submit" value="search" />
-            <i class="explore"></i>
+            <input type="text" id="search-input" class="search-input" placeholder="Buscar..." />
+            <input type="submit" class="search-button" value="Buscar" />
          </fieldset>
       </form>
    </div>
+
+   
+  <div id="search-results" class="search-results"></div>
+      <p>No users yet...</p>
+      <p>No users yet...</p>
+      <p>No users yet...</p>
+      <p>No users yet...</p>
+      <p>No users yet...</p>
+      <p>No users yet...</p>
 </body>
 </html>

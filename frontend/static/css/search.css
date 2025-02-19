@@ -2,15 +2,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 10px;
   }
   
   .search-input {
     padding: 10px;
     font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 20px;
-    width: 300px;
+    border: 2px solid #ffffff;
+    border-radius: 15px;
+    width: 1500px;
     transition: border-color 0.3s ease;
   }
   
@@ -22,17 +22,18 @@
   .search-button {
     padding: 10px 20px;
     font-size: 16px;
-    margin-left: 10px;
-    background-color: #007BFF;
+    margin-left: 0px;
+    background-color: #3cb1df;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 15px;
+    
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
   
   .search-button:hover {
-    background-color: #ffffff;
+    background-color: #1a7396;
   }
   
   .search-results {
@@ -48,3 +49,30 @@
   .search-results .result-item:last-child {
     border-bottom: none;
   }
+
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.search-results {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.user-card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 200px;
+}

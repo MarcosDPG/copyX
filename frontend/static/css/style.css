@@ -3,55 +3,132 @@ body {
     font-family: Arial, sans-serif;
     background-color: black;
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
     align-items: center;
     height: 100vh;
     margin: 0;
+    padding-right: 10vw;
 }
 
 /* Contenedor del formulario */
 .container {
-    background: white;
-    padding: 20px;
+    background: rgb(255, 255, 255);
+    margin-top: 70px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 0px;
+    padding-right: 0px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     width: 550px;
     text-align: center;
 }
 
-/* Campos de entrada de texto*/
+.container_1 {
+    background: rgb(255, 255, 255);
+    margin-top: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 0px;
+    padding-right: 0px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 550px;
+    text-align: center;
+}
+
 input {
-    width: 100%;
+    width: 90%;
+    max-width: 400px;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-/* Botón */
 button {
     width: 100%;
-    padding: 10px;
+    max-width: 420px;
+    padding: 13px 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     border: none;
-    background: #007bff;
-    color: white;
+    background: #3cb1df;
+    color: #ffffff;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
 }
 
 button:hover {
-    background: #0056b3;
+    background: #1a7396;
 }
 
 /* Enlace */
 a {
     display: block;
     margin-top: 10px;
-    color: #007bff;
+    color: #3cb1df;
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
+}
+
+.title {
+    position: absolute;
+    top: 35%;
+    left: 75%;
+    transform: translate(-50%, -100%);
+    text-align: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.title_2 {
+    position: absolute;
+    top: 25%;
+    left: 75%;
+    transform: translate(-50%, -100%);
+    text-align: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.logo {
+    width: 600px;
+    height: auto;
+    display: block;
+    position: absolute;
+    left: 200px; 
+    top: 48%; 
+    transform: translateY(-50%);
+}
+
+.decorative-line {
+    border: none;
+    width: 95%;
+    height: 2px;
+    background-color: rgb(161, 161, 161);
+    margin: 20px 0;
+    position:absolute;
+    top: 94%;
+    left: 2.5%;   
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    text-decoration: none;
+    background: #3cb1df;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 200px;
 }
