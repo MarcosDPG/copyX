@@ -8,13 +8,15 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <img src="{% static 'images/logo_dark.png' %}" alt="Logo de copyX" class="logo">
+    <div>
+        <img src="{% static 'images/logo_dark.png' %}" alt="Logo de copyX" class="logo">
+    </div>
     <div class="title">
         <h1>Bienvenido a copyX </h1><br>
-    </div>
-    <div class="container_1">
-        <a href="{% url 'login' %}" class="btn">Inicia sesión</a><br>
-        <a href="{% url 'register' %}" class="btn">¿No tienes cuenta? Regístrate</a>
+        <div class="container_1">
+            <a href="{% url 'login' %}" class="btn">Inicia sesión</a><br>
+            <a href="{% url 'register' %}" class="btn">¿No tienes cuenta? Regístrate</a>
+        </div>
     </div>
     <script src="{% static 'js/main.js' %}"></script>
     <hr class="decorative-line">

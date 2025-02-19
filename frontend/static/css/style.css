@@ -3,45 +3,55 @@ body {
     font-family: Arial, sans-serif;
     background-color: black;
     display: flex;
-    justify-content: flex-end;
+    justify-content:center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    padding-right: 10vw;
 }
 
-/* Contenedor del formulario */
+body > div {
+    width: 50%;
+}
+
 .container {
     background: rgb(255, 255, 255);
-    margin-top: 70px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    padding-left: 0px;
-    padding-right: 0px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 550px;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 1%;
     text-align: center;
+    color: black;
+}
+
+.container form > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.container form > div > label{
+    width: 40%;
+
 }
 
 .container_1 {
     background: rgb(255, 255, 255);
-    margin-top: 20px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    padding-left: 0px;
-    padding-right: 0px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 550px;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
     text-align: center;
 }
 
 input {
     width: 90%;
-    max-width: 400px;
-    padding: 10px;
-    margin: 10px 0;
+    height: auto;
+    padding: 7px;
+    margin: 3%;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
@@ -64,7 +74,6 @@ button:hover {
     background: #1a7396;
 }
 
-/* Enlace */
 a {
     display: block;
     margin-top: 10px;
@@ -77,36 +86,19 @@ a:hover {
 }
 
 .title {
-    position: absolute;
-    top: 35%;
-    left: 75%;
-    transform: translate(-50%, -100%);
     text-align: center;
     color: white;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.title_2 {
-    position: absolute;
-    top: 25%;
-    left: 75%;
-    transform: translate(-50%, -100%);
-    text-align: center;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 17px;
+    font-weight: unbold;
 }
 
 .logo {
-    width: 600px;
-    height: auto;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
     display: block;
-    position: absolute;
-    left: 200px; 
-    top: 48%; 
-    transform: translateY(-50%);
 }
+
 
 .decorative-line {
     border: none;
