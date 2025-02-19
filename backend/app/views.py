@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+import firebase_admin
+from firebase_admin import auth
 
 def base(request):
     return render(request, "base.html", {"content_template": "partials/home.html"})
@@ -34,3 +37,7 @@ def settings_partial(request, option):
     elif option == "preferences_options":
         return render(request, "partials/preferences_options.html", {**user_data})
     return None
+
+def login(request):
+    #funcion login:
+    return render(request, "temporal.html")
