@@ -3,6 +3,9 @@ from django.http import JsonResponse
 import firebase_admin
 from firebase_admin import auth
 
+def index(request):
+    return render(request, "index.html")
+
 def base(request):
     return render(request, "base.html", {"content_template": "partials/home.html"})
 
@@ -20,6 +23,17 @@ def profile(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return render(request, "partials/profile.html", {**user_data})
     return render(request, "base.html", {"content_template": "partials/profile.html", **user_data})
+
+def search_view(request):
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return render(request, "partials/search.html")
+    return render(request, "base.html", {"content_template": "partials/search.html"})
+
+def login(request):
+    return render(request, "login.html")
+
+def register(request):
+    return render(request, "register.html")  
 
 def settings_view(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":

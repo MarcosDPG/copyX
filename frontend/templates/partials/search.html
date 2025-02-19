@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   {% load static %}
+   <link rel="stylesheet" href="{% static 'css/search.css' %}">
+</head>
+
+<body>
+   <div class="search-container">
+      <form method="get" id="search-form">
+         <fieldset>
+            <input type="text" id="search-input" class="search-input" placeholder="Buscar..." />
+            <input type="submit" class="search-button" value="Buscar" />
+         </fieldset>
+      </form>
+   </div>
+
+   
+  <div id="search-results" class="search-results"></div>
+      <p>No users yet...</p>
+      <p>No users yet...</p>
+      <p>No users yet...</p>
+      <p>No users yet...</p>
+      <p>No users yet...</p>
+      <p>No users yet...</p>
+</body>
+</html>
