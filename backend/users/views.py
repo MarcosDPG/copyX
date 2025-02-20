@@ -8,26 +8,45 @@ from .forms import RegisterForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
+@api_view(['GET'])
+def user_operations(request, user_id=None):
+    """
+    Maneja las operaciones GET
+    - GET: Obtiene un usuario por su ID.
+    """
+    if request.method == 'GET':
+        # Lógica para obtener un usuario por su ID
+        if user_id:
+            try:
+                user = User.objects.get(id=user_id)
+                serializer = UserSerializer(user)
+                return Response(serializer.data)
+            except User.DoesNotExist:
+                return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            # Si no se proporciona un ID, devuelve todos los usuarios
+            users = User.objects.all()
+            serializer = UserSerializer(users, many=True)
+            return Response(serializer.data)
+
 def login_view(request):
     if request.method == 'POST':
-        # Obtén los datos del formulario
-        username = request.POST.get('username')
+        user_name = request.POST.get('user_name')
         password = request.POST.get('password')
 
-        # Autentica al usuario
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, user_name=user_name, password=password)
 
         if user is not None:
-            # Si las credenciales son válidas, inicia sesión
             login(request, user)
-            return redirect('home')  # Redirige al home después del login
+            request.session.save()
+            response = redirect('home')  # Redirige al usuario a la página de inicio
+            response.set_cookie('sessionid', request.session.session_key, httponly=True)
+            return response
         else:
-            # Si las credenciales son inválidas, muestra un mensaje de error
-            messages.error(request, 'Usuario o contraseña incorrectos.')
-            return redirect('login')  # Redirige de nuevo al formulario de login
-    else:
-        # Si no es una solicitud POST, muestra el formulario de login
-        return render(request, 'login.html')
+            messages.error(request, 'Usuario o contraseña incorrectos.')  
+            return redirect('login')  # Redirige al formulario de login con el mensaje de error
+
+    return render(request, 'login.html')
 
 def register(request):
     if request.method == 'POST':
