@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-def index(request):
+def welcome(request):
     return render(request, "index.html")
 
 def base(request):

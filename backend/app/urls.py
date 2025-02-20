@@ -1,9 +1,9 @@
 from django.urls import path, include
-from app.views import index, base, home, profile, settings_view, settings_partial, search_view, login, register
+from app.views import welcome, base, home, profile, settings_view, settings_partial, search_view, login, register
 
 urlpatterns = [
-    path("", index, name="index"),
-    path("base/", base, name="base"),
+    path("welcome/", welcome, name="welcome"),
+    path("", base, name="start"),
     path("home/", home, name="home"),
     path("login/", login, name="login"),
     path("register/", register, name="register"),
