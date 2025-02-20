@@ -4,27 +4,20 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
-        const formData = new FormData(form);
-        const data = {
-            name: formData.get("name"),
-            birth_date: formData.get("birth_date"),
-            user_name: formData.get("user_name"),
-            email: formData.get("email"),
-            password: formData.get("password"),
-        };
+        const formData = new URLSearchParams(new FormData(form));
 
         try {
             const response = await fetch("/users/auth/singup/", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/x-www-form-urlencoded",
                     "X-CSRFToken": formData.get("csrfmiddlewaretoken"),
                 },
-                body: JSON.stringify(data),
+                body: formData.toString(),
             });
 
             if (response.ok) {
-                window.location.href = "/users/auth/login";
+                window.location.href = "/users/auth/login/";
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || "Error en el registro. Inténtalo de nuevo.");
