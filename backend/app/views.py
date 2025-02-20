@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from users.views import retrieve_user
+from publications.models import Tweet
 
 def welcome(request):
     return render(request, "index.html")
@@ -11,14 +13,18 @@ def home(request):
     return render(request, "base.html", {"content_template": "partials/home.html"})  # Carga la página completa
 
 @login_required
-def profile(request):
+def profile(request, user_id = None):
     user_data = {
-        "name": "elnombredelusuarioaca",
-        "username":"elusernameaca",
+        "name": "",
+        "user_name":"",
         "posts_count": 0,
     }
+    if user_id:
+        user_data = retrieve_user(user_id)
+        tweet_count = Tweet.objects.filter(user_id=user_id).count()
+        user_data["posts_count"] = tweet_count
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-        return render(request, "partials/profile.html", {**user_data})
+        return render(request, "partials/profile.html", user_data)
     return render(request, "base.html", {"content_template": "partials/profile.html", **user_data})
 
 @login_required
