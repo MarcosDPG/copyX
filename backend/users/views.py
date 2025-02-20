@@ -26,7 +26,6 @@ def user_operations(request, user_id=None):
             # If there is no id, it returns all users
             try:
                 users = User.objects.all()
-                print(users)
                 serializer = UserSerializer(users, many=True)
                 return Response(serializer.data)
             except Exception as e:
