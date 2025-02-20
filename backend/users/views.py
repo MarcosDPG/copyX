@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import User
 from .serializers import UserSerializer
-from rest_framework import serializers, status
+from rest_framework import status
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
 from django.contrib.auth import authenticate, login
@@ -15,19 +15,22 @@ def user_operations(request, user_id=None):
     - GET: Obtiene un usuario por su ID.
     """
     if request.method == 'GET':
-        # Lógica para obtener un usuario por su ID
+        # Get an user for id
         if user_id:
             try:
-                user = User.objects.get(id=user_id)
-                serializer = UserSerializer(user)
-                return Response(serializer.data)
+                data_user = retrieve_user(user_id)
+                return Response(data=data_user)
             except User.DoesNotExist:
                 return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
         else:
-            # Si no se proporciona un ID, devuelve todos los usuarios
-            users = User.objects.all()
-            serializer = UserSerializer(users, many=True)
-            return Response(serializer.data)
+            # If there is no id, it returns all users
+            try:
+                users = User.objects.all()
+                print(users)
+                serializer = UserSerializer(users, many=True)
+                return Response(serializer.data)
+            except Exception as e:
+                return Response({"Error": str(e)})
 
 def login_view(request):
     if request.method == 'POST':
@@ -73,3 +76,15 @@ def register(request):
         form = RegisterForm()
 
     return render(request, 'register.html', {'form': form})
+
+def retrieve_user(id):
+    try:
+        user = User.objects.get(user_id=id)
+        serializer = UserSerializer(user)
+        return serializer.data
+    except User.DoesNotExist:
+        return {
+        "name": "",
+        "user_name":"",
+        "posts_count": 0
+        }
