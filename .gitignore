@@ -1,5 +1,6 @@
 # migrations
 *_initial.py
+*_alter_user_password.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

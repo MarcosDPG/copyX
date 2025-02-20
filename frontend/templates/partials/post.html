@@ -1,0 +1,31 @@
+<div class="post_container">
+    <div>
+        <div class="user_image">
+            {% include 'icons/profile.html' %}
+        </div>
+    </div>
+    <div class="content_post_container">
+        <div class="data_user_content_post_container">
+            <p class="name" data-userID="{{ tweet.user.user_id }}">{{ tweet.user.name }}</p>
+            <p class="username">{{ tweet.user.username }}</p>
+            <p class="delta_created_time">{{ tweet.delta_created_time }}</p>
+        </div>
+        <div class="message_content_post_container">
+            <p>{{ tweet.content }}</p>
+        </div>
+        <div class="interactions_content_post_container">
+            <div>
+                {% include 'icons/comment.html' %}
+                <p class="comments_count">{{ tweet.comments_count }}</p>
+            </div>
+            <div>
+                {% include 'icons/repost.html' %}
+                <p class="reposts_count">{{ tweet.reposts_count }}</p>
+            </div>
+            <div>
+                {% include 'icons/comment.html' %}
+                <p class="likes_count">{{ tweet.likes_count }}</p>
+            </div>
+        </div>
+    </div>
+</div>

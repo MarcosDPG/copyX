@@ -1,5 +1,14 @@
 import os
 
+LOGIN_URL = '/users/auth/login/'
+
+SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Guarda la sesión en la BD
+SESSION_COOKIE_NAME = "sessionid"
+SESSION_COOKIE_SECURE = False  # Ponlo en True si usas HTTPS
+SESSION_COOKIE_HTTPONLY = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Cambia a True si quieres que se cierre al cerrar el navegador
+SESSION_COOKIE_SAMESITE = "Lax"
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = "supersecretkey"
@@ -7,6 +16,10 @@ SECRET_KEY = "supersecretkey"
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+
+AUTH_USER_MODEL = 'users.User'
+
+USE_TZ = True
 
 INSTALLED_APPS = [
     "django.contrib.admin",

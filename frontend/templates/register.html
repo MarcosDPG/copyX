@@ -1,3 +1,4 @@
+<!-- templates/register.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,7 +10,7 @@
 </head>
 <body>
     <div>
-    <img src="{% static 'images/logo_dark.png' %}" alt="Logo de copyX" class="logo">
+        <img src="{% static 'images/logo_dark.png' %}" alt="Logo de copyX" class="logo">
     </div>
     <div class="title">
         <h2>Crea tu cuenta</h2><br>
@@ -21,12 +22,12 @@
                     <input type="text" id="name" name="name" required><br>
                 </div>
                 <div>
-                    <label for="birthday">fecha de nacimiento</label>
-                    <input type="date" id="birthday" name="birthday" max="2014-12-31" required><br>  
+                    <label for="birth_date">Fecha de nacimiento</label>
+                    <input type="date" id="birth_date" name="birth_date" max="2014-12-31" required><br>  
                 </div>
                 <div>
-                    <label for="username">Usuario</label>
-                    <input type="text" id="username" name="username" required><br>
+                    <label for="user_name">Usuario</label>
+                    <input type="text" id="user_name" name="user_name" required><br>
                 </div>
                 <div>
                     <label for="email">Correo Electrónico</label>
@@ -41,7 +42,7 @@
             <a href="{% url 'login' %}">¿Ya tienes cuenta? Inicia sesión</a>
         </div>
     </div>
-    
     <hr class="decorative-line">
+    <script src="{% static 'js/singup.js' %}"></script>
 </body>
 </html>
