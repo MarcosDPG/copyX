@@ -7,10 +7,12 @@ class User(AbstractUser):
     user_name = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=30, blank= False)
     email = models.EmailField(max_length=50)
-    password = models.CharField(max_length=64)
+    password = models.CharField(max_length=128)
     birth_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    last_login = models.DateTimeField(blank=True, null=True)
 
     first_name = None
     last_name = None
