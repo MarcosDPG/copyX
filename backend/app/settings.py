@@ -1,5 +1,7 @@
 import os
 
+LOGIN_URL = '/login/'
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = "supersecretkey"
@@ -7,6 +9,8 @@ SECRET_KEY = "supersecretkey"
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+
+AUTH_USER_MODEL = 'users.User'
 
 INSTALLED_APPS = [
     "django.contrib.admin",

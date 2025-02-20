@@ -1,9 +1,10 @@
 from django.urls import path, include
-from app.views import welcome, base, home, profile, settings_view, settings_partial, search_view, login, register
+from django.contrib import admin
+from app.views import welcome, home, profile, settings_view, settings_partial, search_view, login, register
 
 urlpatterns = [
+    path("", home, name="start"),
     path("welcome/", welcome, name="welcome"),
-    path("", base, name="start"),
     path("home/", home, name="home"),
     path("login/", login, name="login"),
     path("register/", register, name="register"),
@@ -12,5 +13,6 @@ urlpatterns = [
     path("search/", search_view, name="search"),
     path("compose/post/", home, name="compose_post"),
     path('settings/<str:option>/', settings_partial, name='settings_partial'),
-    path("users/", include("users.urls"))
+    path('admin/', admin.site.urls),
+    path("users/", include("users.urls")),
 ]

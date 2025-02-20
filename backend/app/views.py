@@ -1,16 +1,16 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 def welcome(request):
     return render(request, "index.html")
 
-def base(request):
-    return render(request, "base.html", {"content_template": "partials/home.html"})
-
+@login_required
 def home(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return render(request, "partials/home.html")  # Carga solo la parte dinámica
     return render(request, "base.html", {"content_template": "partials/home.html"})  # Carga la página completa
 
+@login_required
 def profile(request):
     user_data = {
         "name": "elnombredelusuarioaca",
@@ -21,22 +21,27 @@ def profile(request):
         return render(request, "partials/profile.html", {**user_data})
     return render(request, "base.html", {"content_template": "partials/profile.html", **user_data})
 
+@login_required
 def search_view(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return render(request, "partials/search.html")
     return render(request, "base.html", {"content_template": "partials/search.html"})
 
+@login_required
 def login(request):
     return render(request, "login.html")
 
+@login_required
 def register(request):
-    return render(request, "register.html")  
+    return render(request, "register.html") 
 
+@login_required
 def settings_view(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return render(request, "partials/settings.html")
     return render(request, "base.html", {"content_template": "partials/settings.html"})
 
+@login_required
 def settings_partial(request, option):
     user_data = {
         "name": "elnombredelusuarioaca",
