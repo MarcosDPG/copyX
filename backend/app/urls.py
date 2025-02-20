@@ -1,18 +1,16 @@
 from django.urls import path, include
 from django.contrib import admin
-from app.views import welcome, home, profile, settings_view, settings_partial, search_view, login, register
+from . import views
 
 urlpatterns = [
-    path("", home, name="start"),
-    path("welcome/", welcome, name="welcome"),
-    path("home/", home, name="home"),
-    path("login/", login, name="login"),
-    path("register/", register, name="register"),
-    path("profile/", profile, name="profile"),
-    path("settings/", settings_view, name="settings"),
-    path("search/", search_view, name="search"),
-    path("compose/post/", home, name="compose_post"),
-    path('settings/<str:option>/', settings_partial, name='settings_partial'),
+    path("", views.home, name="start"),
+    path("welcome/", views.welcome, name="welcome"),
+    path("home/", views.home, name="home"),
+    path("profile/", views.profile, name="profile"),
+    path("settings/", views.settings_view, name="settings"),
+    path("search/", views.search_view, name="search"),
+    path("compose/post/", views.home, name="compose_post"),
+    path('settings/<str:option>/', views.settings_partial, name='settings_partial'),
     path('admin/', admin.site.urls),
     path("users/", include("users.urls")),
 ]

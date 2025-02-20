@@ -16,6 +16,7 @@
         <h2>Crea tu cuenta</h2><br>
         <div class="container">
             <form method="post">
+                {% csrf_token %}
                 <div>
                     <label for="name">Nombre</label>
                     <input type="text" id="name" name="name" required><br>

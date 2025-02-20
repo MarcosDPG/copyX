@@ -28,14 +28,6 @@ def search_view(request):
     return render(request, "base.html", {"content_template": "partials/search.html"})
 
 @login_required
-def login(request):
-    return render(request, "login.html")
-
-@login_required
-def register(request):
-    return render(request, "register.html") 
-
-@login_required
 def settings_view(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return render(request, "partials/settings.html")
