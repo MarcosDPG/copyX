@@ -8,6 +8,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+USE_TZ = True
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
