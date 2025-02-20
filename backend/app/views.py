@@ -1,18 +1,16 @@
 from django.shortcuts import render
-from django.http import JsonResponse
-import firebase_admin
-from firebase_admin import auth
+from django.contrib.auth.decorators import login_required
 
-def index(request):
-    return render(request, "index.html")
-
+@login_required
 def base(request):
     return render(request, "base.html", {"content_template": "partials/home.html"})
 
+@login_required
 def home(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return render(request, "partials/home.html")  # Carga solo la parte dinámica
     return render(request, "base.html", {"content_template": "partials/home.html"})  # Carga la página completa
+
 
 def profile(request):
     user_data = {
@@ -24,22 +22,13 @@ def profile(request):
         return render(request, "partials/profile.html", {**user_data})
     return render(request, "base.html", {"content_template": "partials/profile.html", **user_data})
 
-def search_view(request):
-    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-        return render(request, "partials/search.html")
-    return render(request, "base.html", {"content_template": "partials/search.html"})
-
-def login(request):
-    return render(request, "login.html")
-
-def register(request):
-    return render(request, "register.html")  
-
+@login_required
 def settings_view(request):
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return render(request, "partials/settings.html")
     return render(request, "base.html", {"content_template": "partials/settings.html"})
 
+@login_required
 def settings_partial(request, option):
     user_data = {
         "name": "elnombredelusuarioaca",
@@ -51,7 +40,3 @@ def settings_partial(request, option):
     elif option == "preferences_options":
         return render(request, "partials/preferences_options.html", {**user_data})
     return None
-
-def login(request):
-    #funcion login:
-    return render(request, "temporal.html")
