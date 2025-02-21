@@ -4,6 +4,7 @@ from .models import Tweet, Retweet, Comment
 from users.models import User
 
 class TweetSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
     user_name = serializers.SerializerMethodField()
     delta_created = serializers.SerializerMethodField()
     comments_count = serializers.IntegerField(read_only=True)
@@ -13,10 +14,13 @@ class TweetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = ["content", "tweet_id", "user_name", "delta_created", "comments_count", "retweet_count", "like_count", "user_id"]
+        fields = ["content", "name", "tweet_id", "user_name", "delta_created", "comments_count", "retweet_count", "like_count", "user_id"]
         read_only_fields = ["tweet_id", "user_id"]
 
     def get_user_name(self, obj):
+        return obj.user.user_name
+    
+    def get_name(self, obj):
         return obj.user.name
 
     def get_delta_created(self, obj):
