@@ -8,10 +8,10 @@ from .forms import RegisterForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth import logout
-from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.db.models import Q
 
 @api_view(['GET'])
 def user_operations(request, user_id=None):
@@ -136,3 +136,9 @@ def retrieve_user(id):
         "user_name":"",
         "posts_count": 0
         }
+    
+def search_users(request):
+    query = request.GET.get("q", "").strip()  # Obtiene y limpia el término de búsqueda
+    users = User.objects.filter(user_name__icontains=query) if query else []  # Aplica filtro solo si hay consulta
+
+    return render(request, "partials/search.html", {"users": users, "query": query})
