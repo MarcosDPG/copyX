@@ -79,6 +79,50 @@ function activeTextAreaPostCompose() {
     } catch (error) {}
 }
 
+function activeRequestPostCompose() {
+    document.querySelectorAll(".textarea_container").forEach(form => {
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            let textarea = form.querySelector(".tweet_content");
+            let content = textarea.value.trim();
+
+            if (!content) {
+                alert("El tweet no puede estar vacío");
+                return;
+            }
+
+            let formData = new FormData(this);
+
+            fetch(this.action, {
+                method: this.method,
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": formData.get("csrfmiddlewaretoken"),
+                },
+                credentials: "include"
+            })
+            .then(response => {
+                if (response.status === 201) {
+                    return response.json(); // Procesar respuesta JSON si se creó correctamente
+                }
+                throw new Error("Error en la solicitud, código: " + response.status);
+            })
+            .then(data => {
+                textarea.value = "";
+                try {
+                    loadResources(); // Recargar los tweets o lo necesario
+                } catch (error) {}
+            })
+            .catch(error => {
+                console.error("Error en la solicitud:", error);
+                alert("No se pudo conectar con el servidor o hubo un problema");
+            });
+        });
+    });
+}
+
 function activeHomeMenuOptions() {
     document.querySelectorAll(".option_home_menu").forEach(option => {
         option.addEventListener("click", function () {
@@ -104,6 +148,7 @@ function activeHomeMenuOptions() {
 
 function changeIcon(path) {
     activeTextAreaPostCompose();
+    activeRequestPostCompose()
     activeHomeMenuOptions();
     if (path.endsWith("/") && path.length > 1) {
         path = path.slice(0, -1);
