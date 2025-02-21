@@ -1,7 +1,11 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count, Subquery, OuterRef, Value
 from django.db.models.functions import Coalesce
+from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.utils import timezone
+
+import json
 
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -41,7 +45,9 @@ def tweet_operations(request):
                 tweet.delta_created = format_timedelta(timezone.now() - tweet.created_at)
             # Serialize the tweets
             tweetSerializer = TweetSerializer(tweets, many=True)
-            return Response(data=tweetSerializer.data)
+            tweet_data = json.loads(json.dumps(tweetSerializer.data, default=str))
+            rendered_posts = render_to_string("partials/posts_list.html", {"posts": tweet_data})
+            return render(request, "partials/posts_list.html", {"posts": tweet_data, "empty_message": "No post yet..."})
 
         except Exception as e:
             return Response({"Error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
