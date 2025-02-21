@@ -12,6 +12,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.decorators import login_required
 
 @api_view(['GET'])
 def user_operations(request, user_id=None):
@@ -83,6 +84,45 @@ def register(request):
 def logout_view(request):
     logout(request)  # Cierra la sesión del usuario
     return redirect('login')  # Redirige al usuario a la página de inicio de sesión
+
+@login_required
+def edit_name(request):
+    if request.method == 'POST':
+        # Obtén el nuevo nombre del formulario
+        new_name = request.POST.get('name')
+
+        # Actualiza el nombre del usuario
+        user = request.user
+        user.name = new_name
+        user.save()
+
+        messages.success(request, 'Tu nombre ha sido actualizado correctamente.')
+        return redirect('settings')  # Redirige a la página de configuración
+
+    # Si no es una solicitud POST, muestra el formulario de edición de nombre
+    return redirect('settings')
+
+@login_required
+def edit_birth_date(request):
+    if request.method == 'POST':
+        # Obtén la nueva fecha de nacimiento del formulario
+        day = request.POST.get('day')
+        month = request.POST.get('month')
+        year = request.POST.get('year')
+
+        # Combina los valores en una fecha (formato: YYYY-MM-DD)
+        new_birth_date = f"{year}-{month}-{day}"
+
+        # Actualiza la fecha de nacimiento del usuario
+        user = request.user
+        user.birth_date = new_birth_date
+        user.save()
+
+        messages.success(request, 'Tu fecha de nacimiento ha sido actualizada correctamente.')
+        return redirect('settings')  # Redirige a la página de configuración
+
+    # Si no es una solicitud POST, muestra el formulario de edición de fecha de nacimiento
+    return redirect('settings')
 
 def change_password(request):
     if request.method == 'POST':
