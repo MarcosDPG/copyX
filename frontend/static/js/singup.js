@@ -27,4 +27,15 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Ocurrió un error. Inténtalo más tarde.");
         }
     });
+
+    document.querySelector(".button-toggle").addEventListener("click", toggleInputType);
+
+    function toggleInputType(){
+        const inputElement = document.querySelector(".input-toggle");
+        inputElement.type = inputElement.type === "text" ? "password" : "text"
+        
+        const showIcon = document.querySelector(".show-icon").classList.toggle("hidden");
+        const hideIcon = document.querySelector(".hide-icon").classList.toggle("show");
+    }
+    
 });

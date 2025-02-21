@@ -16,10 +16,24 @@
         <div class="container">
             <form method="post">
                 {% csrf_token %}
-                <label for="user_name">Usuario</label><br>
-                <input type="text" id="user_name" name="user_name" required><br>
-                <label for="password">Contraseña</label><br>
-                <input type="password" id="password" name="password" required>
+                <div>
+                    <label for="user_name">Usuario</label><br>
+                    <input type="text" id="user_name" name="user_name" required><br>
+                </div>
+                <div>
+                    <label for="password">Contraseña</label><br>
+                    <div class="password-container">
+                        <input type="password" class="input-toggle" id="password" name="password" required><br>
+                        <button type="button"  class="button-toggle">
+                            <span class="show-icon">
+                                {% include 'icons/ver.svg' %}
+                            </span>
+                            <span class="hide-icon">
+                                {% include 'icons/esconder.svg' %}
+                            </span>
+                        </button>
+                    </div>
+                </div>
                 <button href="{% url 'home' %}">Ingresar</button>
             </form>
             <a href="{% url 'singup' %}">¿No tienes cuenta? Regístrate</a>
@@ -27,5 +41,6 @@
     </div>
     
     <hr class="decorative-line">
+    <script src="{% static 'js/login.js' %}"></script>
 </body>
 </html>
