@@ -14,5 +14,6 @@ urlpatterns = [
     path('settings/<str:option>/', views.settings_partial, name='settings_partial'),
     path('admin/', admin.site.urls),
     path("users/", include("users.urls")),
-    path("tweets/", include("publications.urls"))
+    path("tweets/", include("publications.urls")),
+    path("interactions/", include("interactions.urls"))
 ]

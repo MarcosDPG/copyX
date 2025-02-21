@@ -29,13 +29,14 @@
 <div class="column_menu_option" onclick="javascript:toggleSelection(this);">
     <p>Cambiar contraseña</p>
     <div class="content">
-        <form>
-            <p>contraseña actual</p>
-            <input type="password">
-            <p>nueva contraseña</p>
-            <input type="password">
-            <p>confirmar constraseña</p>
-            <input type="password">
+        <form method="post" action="{% url 'change_password' %}">
+            {% csrf_token %}  <!-- Token CSRF para protección -->
+            <p>Contraseña actual</p>
+            <input type="password" name="old_password" required>
+            <p>Nueva contraseña</p>
+            <input type="password" name="new_password1" required>
+            <p>Confirmar nueva contraseña</p>
+            <input type="password" name="new_password2" required>
             <button type="submit" class="btn">Guardar</button>
         </form>
     </div>

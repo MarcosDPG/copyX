@@ -10,6 +10,8 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.http import JsonResponse
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 @api_view(['GET'])
 def user_operations(request, user_id=None):
@@ -80,7 +82,27 @@ def register(request):
 
 def logout_view(request):
     logout(request)  # Cierra la sesión del usuario
-    return redirect('login')  # Redirige al usuario a la página de inicio de sesión
+    return redirect('welcome')  # Redirige al usuario a la página de bienvenida
+
+def change_password(request):
+    if request.method == 'POST':
+        # Crea un formulario de cambio de contraseña con los datos enviados
+        form = PasswordChangeForm(request.user, request.POST)
+
+        if form.is_valid():
+            # Si el formulario es válido, cambia la contraseña
+            user = form.save()
+            update_session_auth_hash(request, user)  # Actualiza la sesión para evitar que el usuario sea desconectado
+            messages.success(request, 'Tu contraseña ha sido cambiada correctamente.')
+            return redirect('settings')  # Redirige a la página de configuración
+        else:
+            # Si el formulario no es válido, muestra los errores
+            messages.error(request, 'Por favor, corrige los errores.')
+    else:
+        # Si no es una solicitud POST, muestra el formulario de cambio de contraseña
+        form = PasswordChangeForm(request.user)
+
+    return render(request, 'change_password.html', {'form': form})
 
 def delete_account(request):
     if request.method == 'POST':
@@ -95,7 +117,7 @@ def delete_account(request):
             user.delete()
             logout(request)  # Cierra la sesión del usuario
             messages.success(request, 'Tu cuenta ha sido eliminada correctamente.')
-            return redirect('login')  # Redirige al usuario a la página de inicio de sesión
+            return redirect('welcome')  # Redirige al usuario a la página de bienvenida
         else:
             # Si la contraseña es incorrecta, muestra un mensaje de error
             messages.error(request, 'Contraseña incorrecta. No se pudo eliminar la cuenta.')
