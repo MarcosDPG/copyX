@@ -1,7 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count, Subquery, OuterRef, Value
 from django.db.models.functions import Coalesce
-from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -13,6 +13,7 @@ from .models import Tweet
 from .serializers import TweetSerializer
 
 @api_view(['GET','POST'])
+@login_required
 def tweet_operations(request):
     if request.method == 'GET':
         try:
@@ -36,9 +37,6 @@ def tweet_operations(request):
                     Value(0)
                 )
             )
-            # Calculate the time since the tweet was created
-            for tweet in tweets:
-                tweet.delta_created = format_timedelta(timezone.now() - tweet.created_at)
             # Serialize the tweets
             tweetSerializer = TweetSerializer(tweets, many=True)
             return Response(data=tweetSerializer.data)
@@ -47,23 +45,9 @@ def tweet_operations(request):
             return Response({"Error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     elif request.method == 'POST':
-        tweetSerializer = TweetSerializer(data=request.data)
+        tweetSerializer = TweetSerializer(data=request.data, context={'request': request})
         if tweetSerializer.is_valid():
             tweetSerializer.save()
             return Response(tweetSerializer.data, status=status.HTTP_201_CREATED)
         return Response(tweetSerializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-def format_timedelta(delta):
-    days = delta.days
-    seconds = delta.seconds
-    hours = seconds // 3600
-    minutes = seconds // 60
-
-    if days > 0:
-        return f"{days}D"
-    elif hours > 0:
-        return f"{hours}Hrs"
-    elif minutes > 0:
-        return f"{minutes}min"
-    else:
-        return f"{seconds}seg"
