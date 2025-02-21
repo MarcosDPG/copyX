@@ -1,8 +1,10 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count, Subquery, OuterRef, Value
 from django.db.models.functions import Coalesce
-from django.contrib.auth.decorators import login_required
 
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -13,14 +15,16 @@ from .models import Tweet
 from .serializers import TweetSerializer
 
 @api_view(['GET','POST'])
-@login_required
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
 def tweet_operations(request, user_id=None):
     if request.method == 'GET':
         try:
             # Get the content type for the Tweet model
             tweet_content_type = ContentType.objects.get_for_model(Tweet)
+            # Get the tweets for the user or all tweets, ordered by the creation date
+            tweets = Tweet.objects.filter(user_id=user_id).order_by('-created_at') if user_id else Tweet.objects.all().order_by('-created_at')
             # Count the comments, retweets and likes for each tweet
-            tweets = Tweet.objects.filter(user_id=user_id) if user_id else Tweet.objects.all()
             tweets = tweets.annotate(
                 comments_count=Count("comment"),
                 retweet_count=Count("retweet"),
@@ -32,7 +36,7 @@ def tweet_operations(request, user_id=None):
                             # Filter by content type and tweet id
                             content_type=tweet_content_type,
                             object_id=OuterRef("tweet_id")
-                        ).order_by().values("object_id").annotate(count=Count("pk")).values("count")[:1]
+                        ).values("object_id").annotate(count=Count("pk")).values("count")[:1]
                     ),
                     # If the subquery returns NULL, it uses 0
                     Value(0)
