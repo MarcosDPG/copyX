@@ -1,4 +1,7 @@
 #!/bin/bash
+echo "Deleting old migrations..."
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+echo ====================================
 echo "Creating Migrations..."
 python manage.py makemigrations
 echo ====================================
