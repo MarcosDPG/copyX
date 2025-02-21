@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.utils import timezone
 from .models import Tweet, Retweet, Comment
-from users.models import User
 
 class TweetSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
@@ -46,7 +45,8 @@ class TweetSerializer(serializers.ModelSerializer):
 class RetweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Retweet
-        fields = "__all__"
+        fields = ["tweet","retweet_id"]
+        extra_kwargs = {"tweet": {"write_only": True}}
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
