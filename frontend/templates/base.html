@@ -65,7 +65,7 @@
             {% include content_template %}
         </main>
         <div id="close_sesion">
-            <p>Cerrar sesión</p>
+            <p><a href="{% url 'logout' %}">Cerrar sesión</a></p>  <!-- Enlace para cerrar sesión -->
             <p onclick="javascript:document.getElementById('close_sesion').classList.toggle('active')">X</p>
         </div>
         <div id="cobertor">

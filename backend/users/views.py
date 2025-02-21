@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect
 from .forms import RegisterForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 @api_view(['GET'])
 def user_operations(request, user_id=None):
@@ -75,6 +77,10 @@ def register(request):
         form = RegisterForm()
 
     return render(request, 'register.html', {'form': form})
+
+def logout_view(request):
+    logout(request)  # Cierra la sesión del usuario
+    return redirect('login')  # Redirige al usuario a la página de inicio de sesión
 
 def retrieve_user(id):
     try:
