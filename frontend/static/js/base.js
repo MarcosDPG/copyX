@@ -15,6 +15,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
                     .then(response => response.text())
                     .then(html => {
+                        try {
+                            loadResources()
+                        } catch (error) {
+                            console.log(error)
+                        }
                         document.getElementById("content").innerHTML = html;
                         if (url == "/home") {
                             url = "/";
