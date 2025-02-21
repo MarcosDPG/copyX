@@ -14,13 +14,14 @@ from .serializers import TweetSerializer
 
 @api_view(['GET','POST'])
 @login_required
-def tweet_operations(request):
+def tweet_operations(request, user_id=None):
     if request.method == 'GET':
         try:
             # Get the content type for the Tweet model
             tweet_content_type = ContentType.objects.get_for_model(Tweet)
             # Count the comments, retweets and likes for each tweet
-            tweets = Tweet.objects.annotate(
+            tweets = Tweet.objects.filter(user_id=user_id) if user_id else Tweet.objects.all()
+            tweets = tweets.annotate(
                 comments_count=Count("comment"),
                 retweet_count=Count("retweet"),
                 # Coallesce: If the subquery returns NULL, it uses 0
