@@ -51,6 +51,9 @@ function loadResources(path="", option=0) {
                     break;
             }
             break;
+        case "/settings":
+            loadSettingsPartial()
+            break;
         default:
             break;
     }
@@ -84,4 +87,25 @@ function fetchLikes(userid="") {
         container.innerHTML = html;
     })
     .catch(error => console.error("Error cargando datos:", error));
+}
+
+function loadSettingsPartial(target="") {
+    if (target == "") {
+        target = document.querySelector(".option_home_menu").getAttribute("data-target");
+    }
+    fetch(`/settings/${target}`, { headers: { "X-Requested-With": "XMLHttpRequest" }, credentials: "include" })
+        .then(response => response.text())
+        .then(html => {
+            document.querySelector(".settings .column_menu").innerHTML = html;
+        })
+        .catch(err => console.error("Error cargando opciones:", err));
+}
+
+function toggleSelection(obj) {
+    event.stopPropagation()
+    let ignoredElements = ["INPUT", "BUTTON", "TEXTAREA", "SELECT"];
+    if (ignoredElements.includes(event.target.tagName)) {
+        return; 
+    }
+    obj.classList.toggle("selected");
 }
