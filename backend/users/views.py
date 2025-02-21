@@ -10,6 +10,9 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.http import JsonResponse
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.decorators import login_required
 
 @api_view(['GET'])
 def user_operations(request, user_id=None):
@@ -80,7 +83,66 @@ def register(request):
 
 def logout_view(request):
     logout(request)  # Cierra la sesión del usuario
-    return redirect('login')  # Redirige al usuario a la página de inicio de sesión
+    return redirect('welcome')  # Redirige al usuario a la página de bienvenida
+
+@login_required
+def edit_name(request):
+    if request.method == 'POST':
+        # Obtén el nuevo nombre del formulario
+        new_name = request.POST.get('name')
+
+        # Actualiza el nombre del usuario
+        user = request.user
+        user.name = new_name
+        user.save()
+
+        messages.success(request, 'Tu nombre ha sido actualizado correctamente.')
+        return redirect('settings')  # Redirige a la página de configuración
+
+    # Si no es una solicitud POST, muestra el formulario de edición de nombre
+    return redirect('settings')
+
+@login_required
+def edit_birth_date(request):
+    if request.method == 'POST':
+        # Obtén la nueva fecha de nacimiento del formulario
+        day = request.POST.get('day')
+        month = request.POST.get('month')
+        year = request.POST.get('year')
+
+        # Combina los valores en una fecha (formato: YYYY-MM-DD)
+        new_birth_date = f"{year}-{month}-{day}"
+
+        # Actualiza la fecha de nacimiento del usuario
+        user = request.user
+        user.birth_date = new_birth_date
+        user.save()
+
+        messages.success(request, 'Tu fecha de nacimiento ha sido actualizada correctamente.')
+        return redirect('settings')  # Redirige a la página de configuración
+
+    # Si no es una solicitud POST, muestra el formulario de edición de fecha de nacimiento
+    return redirect('settings')
+
+def change_password(request):
+    if request.method == 'POST':
+        # Crea un formulario de cambio de contraseña con los datos enviados
+        form = PasswordChangeForm(request.user, request.POST)
+
+        if form.is_valid():
+            # Si el formulario es válido, cambia la contraseña
+            user = form.save()
+            update_session_auth_hash(request, user)  # Actualiza la sesión para evitar que el usuario sea desconectado
+            messages.success(request, 'Tu contraseña ha sido cambiada correctamente.')
+            return redirect('settings')  # Redirige a la página de configuración
+        else:
+            # Si el formulario no es válido, muestra los errores
+            messages.error(request, 'Por favor, corrige los errores.')
+    else:
+        # Si no es una solicitud POST, muestra el formulario de cambio de contraseña
+        form = PasswordChangeForm(request.user)
+
+    return render(request, 'change_password.html', {'form': form})
 
 def delete_account(request):
     if request.method == 'POST':
@@ -95,7 +157,7 @@ def delete_account(request):
             user.delete()
             logout(request)  # Cierra la sesión del usuario
             messages.success(request, 'Tu cuenta ha sido eliminada correctamente.')
-            return redirect('login')  # Redirige al usuario a la página de inicio de sesión
+            return redirect('welcome')  # Redirige al usuario a la página de bienvenida
         else:
             # Si la contraseña es incorrecta, muestra un mensaje de error
             messages.error(request, 'Contraseña incorrecta. No se pudo eliminar la cuenta.')

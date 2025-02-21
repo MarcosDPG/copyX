@@ -4,8 +4,9 @@
             {% include 'icons/profile.html' %}
         </div>
     </div>
-    <form class="textarea_container">
-        <textarea placeholder="What is happening!?"></textarea>
+    <form class="textarea_container" method="post" action="{% url 'tweet' %}">
+        {% csrf_token %}
+        <textarea class="tweet_content" placeholder="What is happening!?" name="content" required></textarea>
         <button type="submit" class="btn">
             <span>Post</span>
         </button>

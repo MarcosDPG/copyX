@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>copyX</title>
+    <script>
+        const USER_ID = "{{ request.user.user_id }}";
+    </script>
     {% load static %}
     <link rel="icon" type="image/svg+xml" href="{% static 'images/logo_dark.png' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/base_movil.css' %}">
+    <link rel="stylesheet" href="{% static 'css/post.css' %}">
     {% block styles %}{% endblock %}
     <script defer src="{% static 'js/base.js' %}"></script>
 </head>
@@ -55,8 +59,8 @@
                     {% include 'icons/profile.html' %}
                 </div>
                 <div style="overflow: hidden;">
-                    <p id="name">Minombrecompletosinespacios</p>
-                    <p>@<span id="username">minombredeusuario</span></p>
+                    <p id="name">{{ request.user.name }}</p>
+                    <p>@<span id="username">{{ request.user.user_name }}</span></p>
                 </div>
             </div>
         </nav>
@@ -78,5 +82,6 @@
         </div>
     </div>
 </body>
+<script src="{% static 'js/router_rss.js' %}"></script>
 {% block scripts %}{% endblock %}
 </html>

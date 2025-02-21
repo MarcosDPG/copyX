@@ -244,6 +244,11 @@ main {
     padding-left: 15px;
 }
 
+#close_sesion p > a {
+    color: white;
+    text-decoration: none;
+}
+
 #close_sesion p:hover {
     cursor: pointer;
 }
