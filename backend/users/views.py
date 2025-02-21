@@ -38,6 +38,9 @@ def user_operations(request, user_id=None):
                 return Response({"Error": str(e)})
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+
     if request.method == 'POST':
         user_name = request.POST.get('user_name')
         password = request.POST.get('password')
@@ -56,6 +59,9 @@ def login_view(request):
     return render(request, 'login.html')
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+
     if request.method == 'POST':
         name = request.POST.get('name')
         birth_date = request.POST.get('birth_date')
@@ -83,7 +89,7 @@ def register(request):
 
 def logout_view(request):
     logout(request)  # Cierra la sesión del usuario
-    return redirect('welcome')  # Redirige al usuario a la página de bienvenida
+    return redirect('login')  # Redirige al usuario a la página de login
 
 @login_required
 def edit_name(request):
