@@ -112,7 +112,7 @@ function activeRequestPostCompose() {
             .then(data => {
                 textarea.value = "";
                 try {
-                    loadResources(); // Recargar los tweets o lo necesario
+                    loadResources();
                 } catch (error) {}
             })
             .catch(error => {
