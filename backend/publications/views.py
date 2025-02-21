@@ -15,8 +15,8 @@ from rest_framework.response import Response
 
 from interactions.models import Like
 
-from .models import Tweet
-from .serializers import TweetSerializer
+from .models import Tweet, Retweet
+from .serializers import TweetSerializer, RetweetSerializer
 
 @api_view(['GET','POST'])
 @authentication_classes([SessionAuthentication])
@@ -61,3 +61,28 @@ def tweet_operations(request, user_id=None):
             return Response(tweetSerializer.data, status=status.HTTP_201_CREATED)
         return Response(tweetSerializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET','POST','DELETE'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def retweet_operations(request, retweet_id=None):
+    user = request.user
+    if request.method == 'POST':
+        retweetSerializer = RetweetSerializer(data=request.data)
+
+        if not retweetSerializer.is_valid():
+            return Response(retweetSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Get the tweet to retweet
+        tweet = retweetSerializer.validated_data.get('tweet')
+        # Check if the user has already retweeted the tweet
+        if Retweet.objects.filter(user=user, tweet=tweet).exists():
+            return Response({"Error": "Ya hiciste un retweet a este post"}, status=status.HTTP_400_BAD_REQUEST)
+
+        retweetSerializer.save(user=user)
+        return Response(retweetSerializer.data, status=status.HTTP_201_CREATED)
+    if request.method == 'DELETE':
+        try:
+            Retweet.objects.get(user=user, retweet_id=retweet_id).delete()
+            return Response({"message": "Retweet eliminado"}, status=status.HTTP_200_OK)
+        except Retweet.DoesNotExist:
+            return Response({"Error": "El retweet no existe"}, status=status.HTTP_404_NOT_FOUND)
