@@ -147,6 +147,9 @@ function activeHomeMenuOptions() {
 }
 
 function changeIcon(path) {
+    setTimeout(() => {
+        loadResources(path);
+    }, 100);
     activeTextAreaPostCompose();
     activeRequestPostCompose()
     activeHomeMenuOptions();
