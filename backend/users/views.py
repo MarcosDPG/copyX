@@ -83,7 +83,7 @@ def register(request):
 
 def logout_view(request):
     logout(request)  # Cierra la sesión del usuario
-    return redirect('login')  # Redirige al usuario a la página de inicio de sesión
+    return redirect('welcome')  # Redirige al usuario a la página de bienvenida
 
 @login_required
 def edit_name(request):
@@ -157,7 +157,7 @@ def delete_account(request):
             user.delete()
             logout(request)  # Cierra la sesión del usuario
             messages.success(request, 'Tu cuenta ha sido eliminada correctamente.')
-            return redirect('login')  # Redirige al usuario a la página de inicio de sesión
+            return redirect('welcome')  # Redirige al usuario a la página de bienvenida
         else:
             # Si la contraseña es incorrecta, muestra un mensaje de error
             messages.error(request, 'Contraseña incorrecta. No se pudo eliminar la cuenta.')

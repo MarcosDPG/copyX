@@ -3,7 +3,7 @@
     <div class="user_image">
         {% include 'icons/profile.html' %}
         <style>
-            .profile .user_image {
+            .profile > .user_image {
                 width: 150px;
                 height: 150px;
                 position: relative;
@@ -11,7 +11,7 @@
                 left: 20px;
             }
 
-            .profile .user_image svg {
+            .profile > .user_image svg {
                 width: 130px;
             }
         </style>
@@ -36,27 +36,6 @@
         </div>
     </div>
     <div id="post_container">
-        <p>No post yet...</p>
-        <p>No post yet...</p>
-
-        <p>No post yet...</p>
-        <p>No post yet...</p>
-        <p>No post yet...</p>v
-
-        <p>No post yet...</p>
-        <p>No post yet...</p>v
-        <p>No post yet...</p>
-        <p>No post yet...</p>
-        <p>No post yet...</p>
-        v
-        <p>No post yet...</p>
-        v
-        <p>No post yet...</p>
-
-        <p>No post yet...</p>
-
-        <p>No post yet...</p>
-        <p>No post yet...</p>
-        <p>No post yet...</p>
+        {% include 'icons/spinner.html' %}  
     </div>
 </div>
