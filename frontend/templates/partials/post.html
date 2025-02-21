@@ -1,3 +1,8 @@
+{% if tweet.like_id %}
+<div class="repost_container">
+    <a href="{% url 'profile_auth' %}{{ tweet.user_id_reposter }}">{{ tweet.user_name_reposter }} resposted</a>
+</div>
+{% endif %}
 <div class="post_container">
     <div>
         <div class="user_image">
@@ -6,7 +11,7 @@
     </div>
     <div class="content_post_container">
         <div class="data_user_content_post_container">
-            <p class="name" data-userID="{{ tweet.user.user_id }}">{{ tweet.name }}</p>
+            <p class="name">{{ tweet.name }}</p>
             <a href="{% url 'profile_auth' %}{{ tweet.user_id }}" class="username">@{{ tweet.user_name }}</a>
             <p class="delta_created_time">{{ tweet.delta_created }}</p>
         </div>
@@ -15,15 +20,21 @@
         </div>
         <div class="interactions_content_post_container">
             <div>
-                {% include 'icons/comment.html' %}
+                <div id-post="{{ tweet.tweet_id }}" onclick="javascript:commentController(this)">
+                    {% include 'icons/comment.html' %}
+                </div>
                 <p class="comments_count">{{ tweet.comments_count }}</p>
             </div>
             <div>
-                {% include 'icons/repost.html' %}
+                <div id-post="{{ tweet.tweet_id }}" onclick="javascript:repostController(this)">
+                    {% include 'icons/repost.html' %}
+                </div>
                 <p class="reposts_count">{{ tweet.retweet_count }}</p>
             </div>
             <div>
-                {% include 'icons/like.html' %}
+                <div id-post="{{ tweet.tweet_id }}" id-like="{% if tweet.like_id %}{{ tweet.like_id }}{% endif %}" onclick="javascript:likeController(this)">
+                    {% include 'icons/like.html' %}
+                </div>
                 <p class="likes_count">{{ tweet.like_count }}</p>
             </div>
         </div>
