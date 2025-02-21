@@ -1,3 +1,4 @@
+{% load static %}
 <div>
     <div class="home_menu">
         <div class="option_home_menu selected">
@@ -6,6 +7,12 @@
     </div>
     {% include 'partials/post_compose.html' %}
     <div id="post_container">
-        <p>No post yet...</p>
+        {% include 'icons/spinner.html' %}        
     </div>
 </div>
+{% block scripts %}
+    <script src="{% static 'js/home.js' %}"></script>
+{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/post.css' %}">
+{% endblock %}

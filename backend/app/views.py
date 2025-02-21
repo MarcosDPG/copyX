@@ -14,15 +14,14 @@ def home(request):
 
 @login_required
 def profile(request, user_id = None):
-    user_data = {
-        "name": "",
-        "user_name":"",
-        "posts_count": 0,
-    }
-    if user_id:
-        user_data = retrieve_user(user_id)
-        tweet_count = Tweet.objects.filter(user_id=user_id).count()
-        user_data["posts_count"] = tweet_count
+    # Search for the user_id in case it is not the authenticated user
+    user_id = user_id or request.user.user_id
+    # Count the number of tweets associated with the user
+    tweet_count = Tweet.objects.filter(user_id=user_id).count()
+    # Retrieve the user data in form of a dictionary
+    user_data = retrieve_user(user_id)
+    # Add the number of tweets to the user data
+    user_data["posts_count"] = tweet_count
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return render(request, "partials/profile.html", user_data)
     return render(request, "base.html", {"content_template": "partials/profile.html", **user_data})
