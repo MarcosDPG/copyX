@@ -59,8 +59,8 @@
                     {% include 'icons/profile.html' %}
                 </div>
                 <div style="overflow: hidden;">
-                    <p id="name">Minombrecompletosinespacios</p>
-                    <p>@<span id="username">minombredeusuario</span></p>
+                    <p id="name">{{ request.user.name }}</p>
+                    <p>@<span id="username">{{ request.user.user_name }}</span></p>
                 </div>
             </div>
         </nav>
