@@ -1,6 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count, Subquery, OuterRef, Value
 from django.db.models.functions import Coalesce
+from django.shortcuts import render
+
+import json
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication
@@ -44,7 +48,8 @@ def tweet_operations(request, user_id=None):
             )
             # Serialize the tweets
             tweetSerializer = TweetSerializer(tweets, many=True)
-            return Response(data=tweetSerializer.data)
+            tweet_data = json.loads(json.dumps(tweetSerializer.data, default=str))
+            return render(request, "partials/posts_list.html", {"posts": tweet_data, "empty_message": "No post yet..."})
 
         except Exception as e:
             return Response({"Error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

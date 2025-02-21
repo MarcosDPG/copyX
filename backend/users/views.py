@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from django.http import JsonResponse
 
 @api_view(['GET'])
 def user_operations(request, user_id=None):
@@ -43,12 +44,11 @@ def login_view(request):
         if user is not None:
             login(request, user)
             request.session.save()
-            response = redirect('home')  # Redirige al usuario a la página de inicio
+            response = JsonResponse({"message": "Inicio de sesión exitoso"}, status=200) #Se devuelve json response para poder capturar el error e informar al usuario
             response.set_cookie('sessionid', request.session.session_key, httponly=True)
             return response
         else:
-            messages.error(request, 'Usuario o contraseña incorrectos.')  
-            return redirect('login')  # Redirige al formulario de login con el mensaje de error
+            return JsonResponse({"message": "Usuario o contraseña incorrectos."}, status=400)
 
     return render(request, 'login.html')
 

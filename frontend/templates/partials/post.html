@@ -6,9 +6,9 @@
     </div>
     <div class="content_post_container">
         <div class="data_user_content_post_container">
-            <p class="name" data-userID="{{ tweet.user.user_id }}">{{ tweet.user.name }}</p>
-            <p class="username">{{ tweet.user.username }}</p>
-            <p class="delta_created_time">{{ tweet.delta_created_time }}</p>
+            <p class="name" data-userID="{{ tweet.user.user_id }}">{{ tweet.name }}</p>
+            <a href="{% url 'profile_auth' %}{{ tweet.user_id }}" class="username">@{{ tweet.user_name }}</a>
+            <p class="delta_created_time">{{ tweet.delta_created }}</p>
         </div>
         <div class="message_content_post_container">
             <p>{{ tweet.content }}</p>
@@ -20,11 +20,11 @@
             </div>
             <div>
                 {% include 'icons/repost.html' %}
-                <p class="reposts_count">{{ tweet.reposts_count }}</p>
+                <p class="reposts_count">{{ tweet.retweet_count }}</p>
             </div>
             <div>
-                {% include 'icons/comment.html' %}
-                <p class="likes_count">{{ tweet.likes_count }}</p>
+                {% include 'icons/like.html' %}
+                <p class="likes_count">{{ tweet.like_count }}</p>
             </div>
         </div>
     </div>
