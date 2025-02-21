@@ -288,6 +288,10 @@ main {
     align-items: center;
 }
 
+#post_container > svg, #post_container > p {
+    margin-top: 5vh;
+} 
+
 /* PROFILE */
 
 #portada_image {
