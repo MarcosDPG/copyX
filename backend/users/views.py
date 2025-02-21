@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect
 from .forms import RegisterForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 @api_view(['GET'])
 def user_operations(request, user_id=None):
@@ -75,6 +77,31 @@ def register(request):
         form = RegisterForm()
 
     return render(request, 'register.html', {'form': form})
+
+def logout_view(request):
+    logout(request)  # Cierra la sesión del usuario
+    return redirect('login')  # Redirige al usuario a la página de inicio de sesión
+
+def delete_account(request):
+    if request.method == 'POST':
+        # Obtén la contraseña del formulario
+        password = request.POST.get('password')
+
+        # Verifica la contraseña del usuario
+        user = authenticate(user_name=request.user.user_name, password=password)
+
+        if user is not None:
+            # Si la contraseña es correcta, elimina la cuenta
+            user.delete()
+            logout(request)  # Cierra la sesión del usuario
+            messages.success(request, 'Tu cuenta ha sido eliminada correctamente.')
+            return redirect('login')  # Redirige al usuario a la página de inicio de sesión
+        else:
+            # Si la contraseña es incorrecta, muestra un mensaje de error
+            messages.error(request, 'Contraseña incorrecta. No se pudo eliminar la cuenta.')
+
+    # Si no es una solicitud POST, muestra el formulario de eliminación de cuenta
+    return redirect('settings')  # Redirige a la página de configuración
 
 def retrieve_user(id):
     try:

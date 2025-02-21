@@ -43,9 +43,10 @@
 <div class="column_menu_option" onclick="javascript:toggleSelection(this);">
     <p>Eliminar cuenta</p>
     <div class="content">
-        <form>
+        <form method="post" action="{% url 'delete_account' %}">
+            {% csrf_token %}  <!-- Token CSRF para protección -->
             <p>Escribe tu contraseña</p>
-            <input type="password">
+            <input type="password" name="password" required>
             <button type="submit" class="btn">Eliminar cuenta</button>
         </form>
     </div>
