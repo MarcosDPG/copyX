@@ -1,38 +1,26 @@
 from rest_framework import serializers
-from django.utils import timezone
 from .models import Tweet, Retweet, Comment
 
 class TweetSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()
-    delta_created = serializers.SerializerMethodField()
+    delta_created = serializers.CharField(read_only=True)
     comments_count = serializers.IntegerField(read_only=True)
     like_count = serializers.IntegerField(read_only=True)
     retweet_count = serializers.IntegerField(read_only=True)
     user_id = serializers.UUIDField(read_only=True)
-
+    id_like = serializers.CharField(read_only=True)
+    user_id_reposter = serializers.UUIDField(read_only=True)
+    user_name_reposter = serializers.CharField(read_only=True)
+    
     class Meta:
         model = Tweet
-        fields = ["content", "tweet_id", "user_name", "delta_created", "comments_count", "retweet_count", "like_count", "user_id"]
+        fields = ["content", "tweet_id", "user_name", "delta_created", "comments_count", "retweet_count",
+                  "like_count", "user_id", "id_like", "user_id_reposter", "user_name_reposter"]
         read_only_fields = ["tweet_id", "user_id"]
+        extra_kwargs = {"date_tmp": {"write_only": True}}
 
     def get_user_name(self, obj):
         return obj.user.name
-
-    def get_delta_created(self, obj):
-        delta = timezone.now() - obj.created_at
-        days = delta.days
-        seconds = delta.seconds
-        hours = seconds // 3600
-        minutes = seconds // 60
-
-        if days > 0:
-            return f"{days}D"
-        elif hours > 0:
-            return f"{hours}Hrs"
-        elif minutes > 0:
-            return f"{minutes}min"
-        else:
-            return f"{seconds}seg"
 
     def create(self, validated_data):
         validated_data["user"] = self.context["request"].user
@@ -41,7 +29,7 @@ class TweetSerializer(serializers.ModelSerializer):
 class RetweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Retweet
-        fields = ["tweet","retweet_id"]
+        fields = ["tweet", "retweet_id"]
         extra_kwargs = {"tweet": {"write_only": True}}
 
 class CommentSerializer(serializers.ModelSerializer):
