@@ -15,16 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
                     .then(response => response.text())
                     .then(html => {
-                        try {
-                            loadResources()
-                        } catch (error) {
-                            console.log(error)
-                        }
                         document.getElementById("content").innerHTML = html;
                         if (url == "/home") {
                             url = "/";
                         }
                         history.pushState(null, "", url);
+                        OptionSelected = 0;
                         changeIcon(url);
                     })
                     .catch(err => console.error("Error cargando la vista:", err));
@@ -48,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.text())
                 .then(html => {
                     document.getElementById("content").innerHTML = html;
+                    OptionSelected = 0;
                     changeIcon(location.pathname);
                 });
         }
@@ -63,19 +60,6 @@ function activeTextAreaPostCompose() {
                 this.style.height = (this.scrollHeight) + "px";
             });
         });
-
-        document.querySelectorAll(".textarea_container").forEach(container => {
-            container.addEventListener("submit", function (e) {
-                e.preventDefault();
-                let text = this.querySelector("textarea").value.trim();
-            
-                if (text) {
-                    console.log("Publicando:", text);
-                    // TODO realizar fecth y publicarlo
-                }
-            });
-        });
-
     } catch (error) {}
 }
 
@@ -130,6 +114,7 @@ function activeHomeMenuOptions() {
             if (p.endsWith("/") && p.length > 1) {
                 p = p.slice(0, -1);
             }
+            OptionSelected = parseInt(this.getAttribute("number-option-target"))
             switch (p) {
                 case "/settings":
                     loadSettingsPartial(this.getAttribute("data-target"))
@@ -137,7 +122,6 @@ function activeHomeMenuOptions() {
                 default:
                     break;
             }
-            console.log(this.name)
             document.querySelectorAll(".option_home_menu").forEach(option =>{
                 option.classList.remove("selected");
             })

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Tweet, Retweet, Comment
 
 class TweetSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
     user_name = serializers.SerializerMethodField()
     delta_created = serializers.CharField(read_only=True)
     comments_count = serializers.IntegerField(read_only=True)
@@ -14,12 +15,15 @@ class TweetSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Tweet
-        fields = ["content", "tweet_id", "user_name", "delta_created", "comments_count", "retweet_count",
+        fields = ["content", "name", "tweet_id", "user_name", "delta_created", "comments_count", "retweet_count",
                   "like_count", "user_id", "id_like", "user_id_reposter", "user_name_reposter"]
         read_only_fields = ["tweet_id", "user_id"]
         extra_kwargs = {"date_tmp": {"write_only": True}}
 
     def get_user_name(self, obj):
+        return obj.user.user_name
+    
+    def get_name(self, obj):
         return obj.user.name
 
     def create(self, validated_data):
