@@ -15,7 +15,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from interactions.models import Like
-
+from users.models import User
 from .models import Tweet, Retweet, Comment
 from .serializers import TweetSerializer, RetweetSerializer, CommentSerializer
 
@@ -25,64 +25,7 @@ from .serializers import TweetSerializer, RetweetSerializer, CommentSerializer
 def tweet_operations(request, user_id=None, postman=None):
     if request.method == 'GET':
         try:
-            # Get the content type for the Tweet model
-            tweet_content_type = ContentType.objects.get_for_model(Tweet)
-
-            # Get the tweets for the user or all tweets, ordered by the creation date
-            tweets = Tweet.objects.filter(user_id=user_id).order_by('-created_at') if user_id else Tweet.objects.all().order_by('-created_at')
-
-            # Annotate tweets with comments count, retweet count, and like count
-            tweets = tweets.annotate(
-                comments_count=Count("comment"),
-                retweet_count=Count("retweet"),
-                like_count=Coalesce(
-                    Subquery(
-                        Like.objects.filter(
-                            content_type=tweet_content_type,
-                            object_id=OuterRef("tweet_id")
-                        ).values("object_id").annotate(count=Count("pk")).values("count")[:1]
-                    ),
-                    Value(0)
-                ),
-                id_like=Coalesce(
-                    Subquery(
-                        Like.objects.filter(
-                            content_type=tweet_content_type,
-                            object_id=OuterRef("pk"),
-                            user=request.user
-                        ).values("like_id")[:1]
-                    ),
-                    Value(None)
-                ),
-            )
-
-            # Convert tweets to list and add date_tmp attribute
-            tweets = list(tweets)
-            for tweet in tweets:
-                tweet.date_tmp = tweet.created_at
-
-            # Create a copy of tweets to avoid modifying the original list while iterating
-            copy_tweets = copy.deepcopy(tweets)
-
-            # Check if the tweet has been retweeted by the user and add retweet information
-            for tweet in copy_tweets:
-                retweets = Retweet.objects.filter(tweet=tweet).select_related('user')
-                for retweet in retweets:
-                    tweet.user_id_reposter = retweet.user_id
-                    tweet.user_name_reposter = retweet.user.name
-                    tweet.date_tmp = retweet.created_at
-                    tweet.my_repost_id = retweet.retweet_id
-                    tweets.append(tweet)
-
-            # Sort tweets by date_tmp in descending order
-            sorted_tweet_data = sorted(tweets, key=lambda x: x.date_tmp, reverse=True)
-
-            # Calculate delta_created for each tweet
-            for tweet in sorted_tweet_data:
-                tweet.delta_created = get_delta_created(tweet.date_tmp)
-
-            # Serialize the sorted tweets
-            tweetSerializer = TweetSerializer(sorted_tweet_data, many=True)
+            tweetSerializer = retrieve_information(request.user, user_id)
             tweet_data = json.loads(json.dumps(tweetSerializer.data, default=str))
             return render(request, "partials/posts_list.html", {"posts": tweet_data, "empty_message": "No post yet..."})
 
@@ -112,7 +55,7 @@ def get_delta_created(fecha):
     else:
         return f"{seconds}seg"
 
-@api_view(['GET','POST','DELETE'])
+@api_view(['POST','DELETE'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def retweet_operations(request, retweet_id=None):
@@ -157,3 +100,80 @@ def comment_operations(request, comment_id=None):
             return Response({"message": "Comentario eliminado"}, status=status.HTTP_200_OK)
         except Comment.DoesNotExist:
             return Response({"Error": "El comentario no existe"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def retrieve_retweet_info(request):
+    user = request.user
+    # Get all the necessary information for the retweets
+    tweetSerializer = retrieve_information(user=user, is_retweet=True)
+    return Response(tweetSerializer.data, status=status.HTTP_200_OK)
+
+# Return all the necessary information for the tweets, is_retweet means that the user is looking for his retweets
+def retrieve_information(user=None, user_id=None, is_retweet=False):
+    # Get the content type for the Tweet model
+    tweet_content_type = ContentType.objects.get_for_model(Tweet)
+    # Look for the retweets of the user and then get the tweets related to the them
+    if is_retweet:
+        retweets = Retweet.objects.filter(user=user).order_by('-created_at').select_related('tweet')
+        tweets = Tweet.objects.filter(tweet_id__in=[retweet.tweet_id for retweet in retweets]).order_by('-created_at')
+    # Get the tweets for the user_id or all tweets, ordered by the creation date
+    else:
+        tweets = Tweet.objects.filter(user_id=user_id).order_by('-created_at') if user_id else Tweet.objects.all().order_by('-created_at')
+    # Get the user for the user_id or else use the user that is logged in
+        user = User.objects.get(user_id=user_id) if user_id else user
+    # Annotate tweets with comments count, retweet count, and like count
+    tweets = tweets.annotate(
+        comments_count=Count("comment"),
+        retweet_count=Count("retweet"),
+        like_count=Coalesce(
+            Subquery(
+                Like.objects.filter(
+                    content_type=tweet_content_type,
+                    object_id=OuterRef("tweet_id")
+                ).values("object_id").annotate(count=Count("pk")).values("count")[:1]
+            ),
+            Value(0)
+        ),
+        id_like=Coalesce(
+            Subquery(
+                Like.objects.filter(
+                    content_type=tweet_content_type,
+                    object_id=OuterRef("pk"),
+                    user=user
+                ).values("like_id")[:1]
+            ),
+            Value(None)
+        ),
+    )
+
+    # Convert tweets to list and add date_tmp attribute that will be used for sorting
+    # and then make the diferentiation the actual date and the tweet/retweet date
+    tweets = list(tweets)
+    for tweet in tweets:
+        tweet.date_tmp = tweet.created_at
+
+    # Create a copy of tweets to avoid modifying the original list while iterating
+    copy_tweets = copy.deepcopy(tweets)
+    # If the user is looking for his retweets, then the tweets list will be empty
+    if is_retweet:
+        tweets = []
+    # Check if the tweet has been retweeted by the user and add retweet information
+    for tweet in copy_tweets:
+        retweets = Retweet.objects.filter(tweet=tweet).select_related('user')
+        for retweet in retweets:
+            tweet.user_id_reposter = retweet.user_id
+            tweet.user_name_reposter = retweet.user.name
+            tweet.date_tmp = retweet.created_at
+            tweets.append(tweet)
+
+    # Sort tweets by date_tmp in descending order
+    sorted_tweet_data = sorted(tweets, key=lambda x: x.date_tmp, reverse=True)
+
+    # Calculate delta_created for each tweet
+    for tweet in sorted_tweet_data:
+        tweet.delta_created = get_delta_created(tweet.date_tmp)
+
+    # Serialize the sorted tweets
+    return TweetSerializer(sorted_tweet_data, many=True)
