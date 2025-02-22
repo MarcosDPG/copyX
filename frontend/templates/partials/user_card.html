@@ -1,9 +1,9 @@
-<div class="">
+<div class="user-card">
     <div class="user_image">
         {% include 'icons/profile.html' %}
     </div>
     <div>
         <p>{{ user.name }}</p>
-        <p>@{{ user.user_name }}</p>
+        <a href="{% url 'profile_auth' %}{{ user.user_id }}">@{{ user.user_name }}</p>
     </div>
 </div>

@@ -3,7 +3,7 @@ from . import views
 from .views import logout_view
 from .views import delete_account
 from .views import change_password
-from .views import search_users
+from .views import list_users
 
 urlpatterns = [
     path('<int:user_id>/', views.user_operations, name="user_id"),
@@ -13,5 +13,6 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('delete-account/', delete_account, name='delete_account'),
     path('change-password/', change_password, name='change_password'),
-    path("search/", search_users, name="search_users"),
+    path('search/', list_users, name='search'),
+
 ]

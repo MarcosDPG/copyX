@@ -54,6 +54,8 @@ function loadResources(path="", option=0) {
         case "/settings":
             loadSettingsPartial()
             break;
+        case "/search":
+            loadUsers()
         default:
             break;
     }
@@ -108,4 +110,14 @@ function toggleSelection(obj) {
         return; 
     }
     obj.classList.toggle("selected");
+}
+
+function loadUsers() {
+    fetch(`/users/`, { credentials: "include" })
+    .then(response => response.text())
+    .then(html => {
+        const container = document.getElementById("post_container");
+        container.innerHTML = html;
+    })
+    .catch(error => console.error("Error cargando datos:", error));
 }

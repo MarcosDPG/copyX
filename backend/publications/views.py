@@ -60,4 +60,3 @@ def tweet_operations(request, user_id=None):
             tweetSerializer.save()
             return Response(tweetSerializer.data, status=status.HTTP_201_CREATED)
         return Response(tweetSerializer.errors,status=status.HTTP_400_BAD_REQUEST)
-

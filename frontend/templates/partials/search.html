@@ -9,10 +9,10 @@
 
 <body>
    <div class="search-container">
-      <form method="get" id="search-form" action="{% url 'search_users' %}">
+      <form method="get" id="search-form">
          <fieldset>
             <div>
-               <input type="text" id="search-input" class="search-input" name="q" placeholder="Buscar..." />
+               <input type="text" name="search_users" class="search-input" placeholder="Buscar..." />
                <button id="bt-buscar" class="search-button">
                   <span alt="buscar" class="search-icon">
                      {% include 'icons/lupa.svg' %}
@@ -21,18 +21,8 @@
             </div>
          </fieldset>
       </form>
-   <div id="search-results" class="search-results">
-        {% if users %}
-            {% for user in users %}
-                <div class="user-card">
-                    <h3>{{ user.username }}</h3>
-                    <p>{{ user.email }}</p>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No se encontraron usuarios.</p>
-        {% endif %}
-    </div>
-      
+      <div id="post_container" class="search-results">
+         {% include 'icons/spinner.html' %}
+     </div>
 </body>
 </html>
