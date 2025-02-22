@@ -53,3 +53,9 @@ def settings_partial(request, option):
     elif option == "preferences_options":
         return render(request, "partials/preferences_options.html", {**user_data})
     return None
+
+@login_required
+def post_view(request, post_id):
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return render(request, "partials/post_view.html")
+    return render(request, "base.html", {"content_template": "partials/post_view.html"})
