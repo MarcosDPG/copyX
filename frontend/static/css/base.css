@@ -1,3 +1,29 @@
+*::-webkit-scrollbar {
+    -webkit-appearance: none;
+    background-color: gray;
+}
+
+*::-webkit-scrollbar:vertical {
+    width:4px;
+}
+
+*::-webkit-scrollbar-button:increment,*::-webkit-scrollbar-button {
+    display: none;
+} 
+
+*::-webkit-scrollbar:horizontal {
+    height: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgb(0, 132, 255);
+    border-radius: 3px;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 2px;  
+}
+
 body {
     font-family: Arial, sans-serif;
     font-size: large;
@@ -55,6 +81,7 @@ main {
     background-color: black;
     color: white;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .nav-link span {
