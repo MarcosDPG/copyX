@@ -100,7 +100,7 @@ p {
 .interactions_content_post_container .reposts_count {}
 .interactions_content_post_container .likes_count {}
 
-svg.liked {
+div.liked svg {
     color: red;
     fill: red;
     animation: pulse-animation 1.5s ease-in-out 1;

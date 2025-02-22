@@ -32,7 +32,7 @@
                 <p class="reposts_count">{{ tweet.retweet_count }}</p>
             </div>
             <div>
-                <div class="{% if tweet.like_id %}liked{% endif %}" type-post="{% if tweet.user_name_commenter %}1{% else %}0{% endif %}" id-post="{{ tweet.tweet_id }}" id-like="{% if tweet.like_id %}{{ tweet.like_id }}{% endif %}" onclick="javascript:likeController(this)">
+                <div class="{% if tweet.id_like %}liked{% endif %}" type-post="{% if tweet.user_name_commenter %}1{% else %}0{% endif %}" id-post="{{ tweet.tweet_id }}" id-like="{% if tweet.id_like %}{{ tweet.id_like }}{% endif %}" onclick="javascript:likeController(this)">
                     {% include 'icons/like.html' %}
                 </div>
                 <p class="likes_count">{{ tweet.like_count }}</p>

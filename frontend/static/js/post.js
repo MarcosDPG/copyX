@@ -1,6 +1,6 @@
 function likeController(obj) {
 
-    if (obj.querySelector('svg').classList.contains('liked') && obj.getAttribute('id-like')) {
+    if (obj.classList.contains('liked') && obj.getAttribute('id-like')) {
         fetch(`/interactions/likes/${obj.getAttribute('id-like')}`, {
             method: 'DELETE',
             headers: {
@@ -17,7 +17,7 @@ function likeController(obj) {
         })
         .then(data => {
             obj.removeAttribute('id-like');
-            obj.querySelector('svg').classList.remove('liked');
+            obj.classList.remove('liked');
             obj.nextElementSibling.textContent = parseInt(obj.nextElementSibling.textContent) - 1;
         });
     } else {
@@ -38,7 +38,7 @@ function likeController(obj) {
         })
         .then(data => {
             obj.setAttribute('id-like', data.like_id);
-            obj.querySelector('svg').classList.add('liked');
+            obj.classList.add('liked');
             obj.nextElementSibling.textContent = parseInt(obj.nextElementSibling.textContent) + 1;
         });
     }
