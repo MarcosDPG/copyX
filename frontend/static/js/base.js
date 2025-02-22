@@ -96,7 +96,7 @@ function activeRequestPostCompose() {
             .then(data => {
                 textarea.value = "";
                 try {
-                    loadResources();
+                    loadResources(window.location.pathname);
                 } catch (error) {}
             })
             .catch(error => {

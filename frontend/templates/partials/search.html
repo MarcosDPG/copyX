@@ -12,17 +12,17 @@
       <form method="get" id="search-form">
          <fieldset>
             <div>
-               <input type="text" id="search-input" class="search-input" placeholder="Buscar..." />
-               <input type="submit" id="bt-buscar" class="search-button" value="Buscar" />
+               <input type="text" name="search_users" class="search-input" placeholder="Buscar..." />
+               <button id="bt-buscar" class="search-button">
+                  <span alt="buscar" class="search-icon">
+                     {% include 'icons/lupa.svg' %}
+                  </span>
+              </button>
             </div>
          </fieldset>
       </form>
-   </div>
-
-   
-  <div id="search-results" class="search-results">
-   
-  </div>
-      
+      <div id="post_container" class="search-results">
+         {% include 'icons/spinner.html' %}
+     </div>
 </body>
 </html>
