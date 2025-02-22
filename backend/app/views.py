@@ -2,8 +2,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from users.views import retrieve_user
 from publications.models import Tweet
+from django.shortcuts import redirect
 
 def welcome(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     return render(request, "index.html")
 
 @login_required
