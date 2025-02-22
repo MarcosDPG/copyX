@@ -10,21 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (url == "/") {
                 url = "/home";
             }
-
-            if (isSamePath(location.pathname,url)) {
-                fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
-                    .then(response => response.text())
-                    .then(html => {
-                        document.getElementById("content").innerHTML = html;
-                        if (url == "/home") {
-                            url = "/";
-                        }
-                        history.pushState(null, "", url);
-                        OptionSelected = 0;
-                        changeIcon(url);
-                    })
-                    .catch(err => console.error("Error cargando la vista:", err));
-            }
+            changeContent(url);
         });
     });
 

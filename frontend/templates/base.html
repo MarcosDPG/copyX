@@ -7,6 +7,22 @@
     <script>
         const USER_ID = "{{ request.user.user_id }}";
         OptionSelected = 0;
+        function changeContent(url) {
+            if (isSamePath(location.pathname,url)) {
+                fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById("content").innerHTML = html;
+                    if (url == "/home") {
+                        url = "/";
+                    }
+                    history.pushState(null, "", url);
+                    OptionSelected = 0;
+                    changeIcon(url);
+                })
+                .catch(err => console.error("Error cargando la vista:", err));
+            }
+        }
     </script>
     {% load static %}
     <link rel="icon" type="image/svg+xml" href="{% static 'images/logo_dark.png' %}">
