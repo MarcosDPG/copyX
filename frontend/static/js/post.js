@@ -27,7 +27,7 @@ function likeController(obj) {
                 'X-CSRFToken': getCookie('csrftoken')
             },
             credentials: 'include',
-            body: JSON.stringify({object_id: obj.getAttribute('id-post'), type: obj.getAttribute('type-post')})
+            body: JSON.stringify({object_id: obj.getAttribute('id-post'), type: parseInt(obj.getAttribute('type-post'))})
         })
         .then(response => {
             if (response.status === 201) {
