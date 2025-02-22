@@ -8,34 +8,44 @@ from .forms import RegisterForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth import logout
-from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+import json
 
 @api_view(['GET'])
 def user_operations(request, user_id=None):
     """
-    Maneja las operaciones GET
-    - GET: Obtiene un usuario por su ID.
+    Maneja las operaciones GET:
+    - GET con `user_id`: Obtiene un usuario por su ID (JSON).
+    - GET sin `user_id`: Devuelve todos los usuarios en JSON o en HTML si `request.accepts("text/html")`.
     """
-    if request.method == 'GET':
-        # Get an user for id
+    try:
         if user_id:
-            try:
-                data_user = retrieve_user(user_id)
-                return Response(data=data_user)
-            except User.DoesNotExist:
-                return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+            # Obtener un usuario por su ID (JSON)
+            data_user = retrieve_user(user_id)
+            return Response(data=data_user)
+
         else:
-            # If there is no id, it returns all users
-            try:
-                users = User.objects.all()
-                serializer = UserSerializer(users, many=True)
-                return Response(serializer.data)
-            except Exception as e:
-                return Response({"Error": str(e)})
+            # Obtener todos los usuarios
+            search_query = request.GET.get('search_users', '')  # Obtener parámetro de búsqueda
+            users = User.objects.filter(user_name__icontains=search_query) if search_query else User.objects.all()
+            
+            serializer = UserSerializer(users, many=True)
+            user_data = json.loads(json.dumps(serializer.data, default=str))
+        
+            return render(request, "partials/user_card_list.html", {"users": user_data, "empty_message": "No se encontraron usuarios."})
+
+            # Si no, devolver JSON como antes
+            return Response(user_data)
+
+    except User.DoesNotExist:
+        return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"Error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -202,3 +212,13 @@ def retrieve_user(id):
         "user_name":"",
         "posts_count": 0
         }
+
+def list_users(request):
+    search = request.GET.get("search_users", "")
+
+    users = User.objects.filter(
+        Q(user_name__icontains=search) |
+        Q(name__icontains=search)
+    ).distinct()
+
+    return JsonResponse({"users": list(users.values("name", "user_name"))})
