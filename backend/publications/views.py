@@ -71,6 +71,7 @@ def tweet_operations(request, user_id=None, postman=None):
                     tweet.user_id_reposter = retweet.user_id
                     tweet.user_name_reposter = retweet.user.name
                     tweet.date_tmp = retweet.created_at
+                    tweet.my_repost_id = retweet.retweet_id
                     tweets.append(tweet)
 
             # Sort tweets by date_tmp in descending order
