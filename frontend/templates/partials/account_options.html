@@ -17,11 +17,11 @@
                 <form method="post" action="{% url 'edit_birth_date' %}">
                     {% csrf_token %}  <!-- Token CSRF para protección -->
                     <p>Día</p>
-                    <input type="number" name="day" value="{{ birth.0 }}" required>
+                    <input type="number" name="day" value="{{ birth.2 }}" required>
                     <p>Mes</p>
                     <input type="number" name="month" value="{{ birth.1 }}" required>
                     <p>Año</p>
-                    <input type="number" name="year" value="{{ birth.2 }}" required>
+                    <input type="number" name="year" value="{{ birth.0 }}" required>
                     <button type="submit" class="btn">Guardar</button>
                 </form>
             </div>
