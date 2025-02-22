@@ -97,7 +97,7 @@ function commentController(obj) {
     if (path.endsWith("/") && path.length > 1) {
         path = path.slice(0, -1);
     }
-    if (window.location.pathname != '/post') {
+    if (path != '/post') {
         url = `/post/${obj.getAttribute('id-post')}`
         changeContent(url)
     }

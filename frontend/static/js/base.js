@@ -63,14 +63,28 @@ function activeRequestPostCompose() {
             }
 
             let formData = new FormData(this);
+            let headers = {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+            };
+
+            path = window.location.pathname;
+            if (path.startsWith("/") && path.length > 1) {
+                path = `/${path.split("/")[1]}/`
+            }
+            if (path.endsWith("/") && path.length > 1) {
+                path = path.slice(0, -1);
+            }
+            if (path == '/post') {
+                formData = JSON.stringify({tweet: document.querySelector('div[id-post]').getAttribute('id-post'), content: content});
+                headers["Content-Type"] = "application/json";
+            }
+            console.log(formData);
 
             fetch(this.action, {
                 method: this.method,
                 body: formData,
-                headers: {
-                    "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRFToken": formData.get("csrfmiddlewaretoken"),
-                },
+                headers: headers,
                 credentials: "include"
             })
             .then(response => {
