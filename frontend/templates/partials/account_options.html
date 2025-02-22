@@ -2,10 +2,21 @@
     <p>Cambiar informacion de cuenta</p>
     <div class="content">
         <div class="column_menu_option" onclick="javascript:toggleSelection(this);">
+            <p>Editar nombre de usuario</p>
+            <div class="content">
+                <form method="post" action="{% url 'edit_username' %}">
+                    {% csrf_token %}  <!-- Token CSRF para protección -->
+                    <input type="text" name="username" value="{{ user.user_name }}" required>
+                    <button type="submit" class="btn">Guardar</button>
+                </form>
+            </div>
+        </div>
+        <div class="column_menu_option" onclick="javascript:toggleSelection(this);">
             <p>Editar nombre</p>
             <div class="content">
-                <form>
-                    <input type="text" value="{{ name }}">
+                <form method="post" action="{% url 'edit_name' %}">
+                    {% csrf_token %}  <!-- Token CSRF para protección -->
+                    <input type="text" name="name" value="{{ name }}" required>
                     <button type="submit" class="btn">Guardar</button>
                 </form>
             </div>
@@ -13,13 +24,14 @@
         <div class="column_menu_option" onclick="javascript:toggleSelection(this);">
             <p>Editar fecha de nacimiento</p>
             <div class="content">
-                <form>
-                    <p>dia</p>
-                    <input type="number" value="{{ birth.0 }}">
-                    <p>mes</p>
-                    <input type="number" value="{{ birth.1 }}">
-                    <p>año</p>
-                    <input type="number" value="{{ birth.2 }}">
+                <form method="post" action="{% url 'edit_birth_date' %}">
+                    {% csrf_token %}  <!-- Token CSRF para protección -->
+                    <p>Día</p>
+                    <input type="number" name="day" value="{{ birth.2 }}" required>
+                    <p>Mes</p>
+                    <input type="number" name="month" value="{{ birth.1 }}" required>
+                    <p>Año</p>
+                    <input type="number" name="year" value="{{ birth.0 }}" required>
                     <button type="submit" class="btn">Guardar</button>
                 </form>
             </div>

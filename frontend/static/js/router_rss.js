@@ -1,4 +1,4 @@
-function loadResources(path="", option=0) {
+function loadResources(path="") {
     if (path.endsWith("/") && path.length > 1) {
         path = path.slice(0, -1);
     }
@@ -17,12 +17,12 @@ function loadResources(path="", option=0) {
         case "/compose/post":
             history.back()
             setTimeout(() => {
-                loadResources(window.location.pathname, option);
+                loadResources(window.location.pathname);
             }, 100);
-            loadResources(path, option)
+            loadResources(path)
             break;
         case "/profile":
-            switch (option) {
+            switch (OptionSelected) {
                 case 0:
                     fetchTweets(USER_ID)
                     break;
@@ -37,7 +37,7 @@ function loadResources(path="", option=0) {
             }
             break;
         case "/profile/":
-            switch (option) {
+            switch (OptionSelected) {
                 case 0:
                     fetchTweets(user_id)
                     break;

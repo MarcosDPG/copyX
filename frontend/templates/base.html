@@ -6,6 +6,7 @@
     <title>copyX</title>
     <script>
         const USER_ID = "{{ request.user.user_id }}";
+        OptionSelected = 0;
     </script>
     {% load static %}
     <link rel="icon" type="image/svg+xml" href="{% static 'images/logo_dark.png' %}">
@@ -14,6 +15,7 @@
     <link rel="stylesheet" href="{% static 'css/post.css' %}">
     {% block styles %}{% endblock %}
     <script defer src="{% static 'js/base.js' %}"></script>
+    <script defer src="{% static 'js/post.js' %}"></script>
 </head>
 <body>
 

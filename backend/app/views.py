@@ -2,8 +2,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from users.views import retrieve_user
 from publications.models import Tweet
+from django.shortcuts import redirect
 
 def welcome(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     return render(request, "index.html")
 
 @login_required
@@ -41,9 +44,9 @@ def settings_view(request):
 @login_required
 def settings_partial(request, option):
     user_data = {
-        "name": "elnombredelusuarioaca",
-        "username":"elusernameaca",
-        "birth": [2,3,2004], # dia - mes - año
+        "name": request.user.name,
+        "user_name":request.user.user_name,
+        "birth": str(request.user.birth_date).split("-"), # año - mes - dia
     }
     if option == "account_options":
         return render(request, "partials/account_options.html", {**user_data})
