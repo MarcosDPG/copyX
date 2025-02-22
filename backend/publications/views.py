@@ -123,8 +123,8 @@ def comment_operations(request, comment_id=None, tweet_id=None):
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
-def retrieve_retweet_info(request):
-    user = request.user
+def retrieve_retweet_info(request, user_id):
+    user = User.objects.get(user_id=user_id)
     # Get all the necessary information for the retweets
     tweetSerializer = retrieve_information(user=user, is_retweet=True)
     tweet_data = json.loads(json.dumps(tweetSerializer.data, default=str))
@@ -133,8 +133,8 @@ def retrieve_retweet_info(request):
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
-def retrieve_liked_post(request):
-    user = request.user
+def retrieve_liked_post(user_id):
+    user = User.objects.get(user_id=user_id)
     tweetSerializer = retrieve_information(user=user, is_posts_liked=True)
     return Response(tweetSerializer.data, status=status.HTTP_200_OK)
 
