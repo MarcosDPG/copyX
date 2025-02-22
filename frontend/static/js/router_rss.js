@@ -72,7 +72,7 @@ function fetchTweets(userid="") {
 }
 
 function fetchRetweets(userid="") {
-    fetch(`/users/retweets/`, { credentials: "include" })
+    fetch(`/users/retweets/${userid}`, { credentials: "include" })
     .then(response => response.text())
     .then(html => {
         const container = document.getElementById("post_container");
@@ -82,7 +82,7 @@ function fetchRetweets(userid="") {
 }
 
 function fetchLikes(userid="") {
-    fetch(`/users/likes/`, { credentials: "include" })
+    fetch(`/users/likes/${userid}`, { credentials: "include" })
     .then(response => response.text())
     .then(html => {
         const container = document.getElementById("post_container");
