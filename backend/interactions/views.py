@@ -23,7 +23,7 @@ def like_operations(request):
         return Response({"message": "Ya le diste like a este objeto"}, status=status.HTTP_400_BAD_REQUEST)
     try:
         # Create a like for the object
-        if like_data["type"] == "1":
+        if like_data["type"] == 1:
             like = create_comment(like_data["object_id"], user)
         else:
             like = create_tweet(like_data["object_id"], user)

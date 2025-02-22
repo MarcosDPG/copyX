@@ -39,4 +39,5 @@ class RetweetSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = "__all__"
+        fields = ["tweet", "content", "comment_id"]
+        extra_kwargs = {"tweet": {"write_only": True}}

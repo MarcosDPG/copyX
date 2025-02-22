@@ -16,8 +16,8 @@ from rest_framework.response import Response
 
 from interactions.models import Like
 
-from .models import Tweet, Retweet
-from .serializers import TweetSerializer, RetweetSerializer
+from .models import Tweet, Retweet, Comment
+from .serializers import TweetSerializer, RetweetSerializer, CommentSerializer
 
 @api_view(['GET','POST'])
 @authentication_classes([SessionAuthentication])
@@ -136,3 +136,23 @@ def retweet_operations(request, retweet_id=None):
             return Response({"message": "Retweet eliminado"}, status=status.HTTP_200_OK)
         except Retweet.DoesNotExist:
             return Response({"Error": "El retweet no existe"}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET','POST','DELETE'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def comment_operations(request, comment_id=None):
+    user = request.user
+    if request.method == 'POST':
+        commentSerializer = CommentSerializer(data=request.data)
+
+        if not commentSerializer.is_valid():
+            return Response(commentSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        commentSerializer.save(user=user)
+        return Response(commentSerializer.data, status=status.HTTP_201_CREATED)
+    if request.method == 'DELETE':
+        try:
+            Comment.objects.get(user=user, comment_id=comment_id).delete()
+            return Response({"message": "Comentario eliminado"}, status=status.HTTP_200_OK)
+        except Comment.DoesNotExist:
+            return Response({"Error": "El comentario no existe"}, status=status.HTTP_404_NOT_FOUND)
