@@ -30,7 +30,7 @@ def tweet_operations(request, user_id=None, post_id=None, postman=None):
             elif user_id:
                 tweetSerializer = retrieve_information(user_id=user_id)
             else:
-                tweetSerializer = retrieve_information(user=request.user)
+                tweetSerializer = retrieve_information(user=request.user, is_in_home=True)
             tweet_data = json.loads(json.dumps(tweetSerializer.data, default=str))
             return render(request, "partials/posts_list.html", {"posts": tweet_data, "empty_message": "No post yet..."})
 
@@ -142,11 +142,10 @@ def retrieve_liked_post(request, user_id):
     return render(request, "partials/posts_list.html", {"posts": tweet_data, "empty_message": "No post yet..."})
 
 # Return all the necessary information for the tweets, is_retweet means that the user is looking for his retweets
-def retrieve_information(user=None, user_id=None, is_retweet=False, is_posts_liked=False):
+def retrieve_information(user=None, user_id=None, is_retweet=False, is_posts_liked=False, is_in_home=False):
     # Get the content type for the Tweet model
     tweet_content_type = ContentType.objects.get_for_model(Tweet)
     # If the user is in the home, it wont wanna seet his own retweets
-    is_home = user is not None
     # Look for the retweets of the user and then get the tweets related to the them
     if is_retweet:
         retweets = Retweet.objects.filter(user=user).order_by('-created_at').select_related('tweet')
@@ -185,6 +184,10 @@ def retrieve_information(user=None, user_id=None, is_retweet=False, is_posts_lik
         ),
     )
 
+#web-1  | [22/Feb/2025 03:28:57] "GET /users/retweets/eaf18527-823f-4f87-ab27-002b8cb748da HTTP/1.1" 200 30970
+#web-1  | [22/Feb/2025 03:29:30] "GET /users/retweets/eaf18527-823f-4f87-ab27-002b8cb748da HTTP/1.1" 200 30950
+
+
     # Convert tweets to list and add date_tmp attribute that will be used for sorting
     # and then make the diferentiation the actual date and the tweet/retweet date
     tweets = list(tweets)
@@ -196,9 +199,17 @@ def retrieve_information(user=None, user_id=None, is_retweet=False, is_posts_lik
     # If the user is looking for his retweets, then the tweets list will be empty
     if is_retweet:
         tweets = []
+        for tweet in copy_tweets:
+            retweets = Retweet.objects.filter(tweet=tweet, user=user).select_related('user')
+            for retweet in retweets:
+                tweet.user_id_reposter = retweet.user_id
+                tweet.user_name_reposter = retweet.user.name
+                tweet.date_tmp = retweet.created_at
+                tweet.my_repost_id = retweet.retweet_id
+                tweets.append(tweet)
     # Check if the tweet has been retweeted by the user and add retweet information
     # Doesnt matter if the tweets is reposted or no when it's checking  posts x likes
-    if not is_posts_liked and is_home:
+    if not is_posts_liked and is_in_home:
         for tweet in copy_tweets:
             retweets = Retweet.objects.filter(tweet=tweet).select_related('user')
             for retweet in retweets:
