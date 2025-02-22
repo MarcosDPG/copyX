@@ -125,14 +125,26 @@ def retrieve_retweet_info(request):
     tweetSerializer = retrieve_information(user=user, is_retweet=True)
     return Response(tweetSerializer.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def retrieve_liked_post(request):
+    user = request.user
+    tweetSerializer = retrieve_information(user=user, is_posts_liked=True)
+    return Response(tweetSerializer.data, status=status.HTTP_200_OK)
+
 # Return all the necessary information for the tweets, is_retweet means that the user is looking for his retweets
-def retrieve_information(user=None, user_id=None, is_retweet=False):
+def retrieve_information(user=None, user_id=None, is_retweet=False, is_posts_liked=False):
     # Get the content type for the Tweet model
     tweet_content_type = ContentType.objects.get_for_model(Tweet)
     # Look for the retweets of the user and then get the tweets related to the them
     if is_retweet:
         retweets = Retweet.objects.filter(user=user).order_by('-created_at').select_related('tweet')
         tweets = Tweet.objects.filter(tweet_id__in=[retweet.tweet_id for retweet in retweets]).order_by('-created_at')
+    # Look for the tweets that the user has liked it
+    elif is_posts_liked:
+        likes = Like.objects.filter(content_type=tweet_content_type, user=user).select_related('content_type')
+        tweets = Tweet.objects.filter(tweet_id__in=[like.object_id for like in likes]).order_by('-created_at')
     # Get the tweets for the user_id or all tweets, ordered by the creation date
     else:
         tweets = Tweet.objects.filter(user_id=user_id).order_by('-created_at') if user_id else Tweet.objects.all().order_by('-created_at')
@@ -175,13 +187,15 @@ def retrieve_information(user=None, user_id=None, is_retweet=False):
     if is_retweet:
         tweets = []
     # Check if the tweet has been retweeted by the user and add retweet information
-    for tweet in copy_tweets:
-        retweets = Retweet.objects.filter(tweet=tweet).select_related('user')
-        for retweet in retweets:
-            tweet.user_id_reposter = retweet.user_id
-            tweet.user_name_reposter = retweet.user.name
-            tweet.date_tmp = retweet.created_at
-            tweets.append(tweet)
+    # Doesnt matter if the tweets is reposted or no when it's checking  posts x likes
+    if not is_posts_liked:
+        for tweet in copy_tweets:
+            retweets = Retweet.objects.filter(tweet=tweet).select_related('user')
+            for retweet in retweets:
+                tweet.user_id_reposter = retweet.user_id
+                tweet.user_name_reposter = retweet.user.name
+                tweet.date_tmp = retweet.created_at
+                tweets.append(tweet)
 
     # Sort tweets by date_tmp in descending order
     sorted_tweet_data = sorted(tweets, key=lambda x: x.date_tmp, reverse=True)
