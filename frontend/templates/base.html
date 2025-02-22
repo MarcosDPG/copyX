@@ -71,8 +71,19 @@
             {% include content_template %}
         </main>
         <div id="close_sesion">
-            <p><a href="{% url 'logout' %}">Cerrar sesión</a></p>  <!-- Enlace para cerrar sesión -->
+            <p><a href="{% url 'logout' %}">Cerrar sesión</a></p>
             <p onclick="javascript:document.getElementById('close_sesion').classList.toggle('active')">X</p>
+            <script>
+                document.addEventListener('click', function(event) {
+                    const closeSesion = document.getElementById('close_sesion');
+                    const myAccount = document.getElementById('my_account');
+            
+                    // Verifica si el clic fue fuera del contenedor #close_sesion y #my_account
+                    if (!closeSesion.contains(event.target) && !myAccount.contains(event.target)) {
+                        closeSesion.classList.remove('active');  // Oculta el contenedor
+                    }
+                });
+            </script>
         </div>
         <div id="cobertor">
             <div class="divCard">
