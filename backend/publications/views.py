@@ -22,14 +22,16 @@ from .serializers import TweetSerializer, RetweetSerializer, CommentSerializer
 @api_view(['GET','POST'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
-def tweet_operations(request, user_id=None, postman=None):
+def tweet_operations(request, user_id=None, post_id=None, postman=None):
     if request.method == 'GET':
         try:
             # Get the content type for the Tweet model
             tweet_content_type = ContentType.objects.get_for_model(Tweet)
-
-            # Get the tweets for the user or all tweets, ordered by the creation date
-            tweets = Tweet.objects.filter(user_id=user_id).order_by('-created_at') if user_id else Tweet.objects.all().order_by('-created_at')
+            if post_id:
+                tweets = Tweet.objects.filter(tweet_id=post_id)
+            else:
+                # Get the tweets for the user or all tweets, ordered by the creation date
+                tweets = Tweet.objects.filter(user_id=user_id).order_by('-created_at') if user_id else Tweet.objects.all().order_by('-created_at')
 
             # Annotate tweets with comments count, retweet count, and like count
             tweets = tweets.annotate(
