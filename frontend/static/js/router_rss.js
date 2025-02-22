@@ -48,7 +48,7 @@ function loadResources(path="") {
             }
             break;
         case "/settings":
-            loadSettingsPartial()
+            loadSettingsPartial(option=parseInt(OptionSelected))
             break;
         case "/search":
             loadUsers()
@@ -91,9 +91,9 @@ function fetchLikes(userid="") {
     .catch(error => console.error("Error cargando datos:", error));
 }
 
-function loadSettingsPartial(target="") {
+function loadSettingsPartial(option=0,target="") {
     if (target == "") {
-        target = document.querySelector(".option_home_menu").getAttribute("data-target");
+        target = document.querySelector(`.option_home_menu[number-option-target='${option}']`).getAttribute("data-target");
     }
     fetch(`/settings/${target}`, { headers: { "X-Requested-With": "XMLHttpRequest" }, credentials: "include" })
         .then(response => response.text())

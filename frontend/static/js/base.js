@@ -114,13 +114,7 @@ function activeHomeMenuOptions() {
                 p = p.slice(0, -1);
             }
             OptionSelected = parseInt(this.getAttribute("number-option-target"))
-            switch (p) {
-                case "/settings":
-                    loadSettingsPartial(this.getAttribute("data-target"))
-                    break;
-                default:
-                    break;
-            }
+            loadResources(location.pathname);
             document.querySelectorAll(".option_home_menu").forEach(option =>{
                 option.classList.remove("selected");
             })
