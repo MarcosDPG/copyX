@@ -136,7 +136,8 @@ def retrieve_retweet_info(request, user_id):
 def retrieve_liked_post(user_id):
     user = User.objects.get(user_id=user_id)
     tweetSerializer = retrieve_information(user=user, is_posts_liked=True)
-    return Response(tweetSerializer.data, status=status.HTTP_200_OK)
+    tweet_data = json.loads(json.dumps(tweetSerializer.data, default=str))
+    return render(request, "partials/posts_list.html", {"posts": tweet_data, "empty_message": "No post yet..."})
 
 # Return all the necessary information for the tweets, is_retweet means that the user is looking for his retweets
 def retrieve_information(user=None, user_id=None, is_retweet=False, is_posts_liked=False):

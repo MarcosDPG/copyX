@@ -82,7 +82,7 @@ function fetchRetweets(userid="") {
 }
 
 function fetchLikes(userid="") {
-    fetch(`/tweets/likes/`, { credentials: "include" })
+    fetch(`/users/likes/`, { credentials: "include" })
     .then(response => response.text())
     .then(html => {
         const container = document.getElementById("post_container");
