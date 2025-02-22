@@ -34,12 +34,9 @@ def user_operations(request, user_id=None):
             users = User.objects.filter(user_name__icontains=search_query) if search_query else User.objects.all()
             
             serializer = UserSerializer(users, many=True)
-            user_data = json.loads(json.dumps(serializer.data, default=str))
+            user_data = json.loads(json.dumps(serializer.data))
         
             return render(request, "partials/user_card_list.html", {"users": user_data, "empty_message": "No se encontraron usuarios."})
-
-            # Si no, devolver JSON como antes
-            return Response(user_data)
 
     except User.DoesNotExist:
         return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)

@@ -62,7 +62,11 @@ function loadResources(path="") {
 }
 
 function fetchTweets(userid="") {
-    fetch(`/tweets/${userid}`, { credentials: "include" })
+    path = `/tweets/${userid}`
+    if (path.endsWith("/") && path.length > 1) {
+        path = path.slice(0, -1);
+    }
+    fetch(path, { credentials: "include" })
     .then(response => response.text())
     .then(html => {
         const container = document.getElementById("post_container");
