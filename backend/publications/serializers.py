@@ -12,11 +12,12 @@ class TweetSerializer(serializers.ModelSerializer):
     id_like = serializers.CharField(read_only=True)
     user_id_reposter = serializers.UUIDField(read_only=True)
     user_name_reposter = serializers.CharField(read_only=True)
+    my_repost_id = serializers.UUIDField(read_only=True)
     
     class Meta:
         model = Tweet
         fields = ["content", "name", "tweet_id", "user_name", "delta_created", "comments_count", "retweet_count",
-                  "like_count", "user_id", "id_like", "user_id_reposter", "user_name_reposter"]
+                  "like_count", "user_id", "id_like", "user_id_reposter", "user_name_reposter", "my_repost_id"]
         read_only_fields = ["tweet_id", "user_id"]
         extra_kwargs = {"date_tmp": {"write_only": True}}
 
@@ -39,4 +40,5 @@ class RetweetSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = "__all__"
+        fields = ["tweet", "content", "comment_id"]
+        extra_kwargs = {"tweet": {"write_only": True}}

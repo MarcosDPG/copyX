@@ -149,6 +149,26 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
 
     return render(request, 'change_password.html', {'form': form})
+@login_required
+def edit_username(request):
+    if request.method == 'POST':
+        # Obtén el nuevo nombre de usuario del formulario
+        new_username = request.POST.get('username')
+
+        # Verifica si el nuevo nombre de usuario ya está en uso
+        if User.objects.filter(user_name=new_username).exists():
+            messages.error(request, 'El nombre de usuario ya está en uso. Por favor, elige otro.')
+        else:
+            # Actualiza el nombre de usuario
+            user = request.user
+            user.user_name = new_username
+            user.save()
+
+            messages.success(request, 'Tu nombre de usuario ha sido actualizado correctamente.')
+            return redirect('settings')  # Redirige a la página de configuración
+
+    # Si no es una solicitud POST, muestra el formulario de edición de nombre de usuario
+    return redirect('settings')
 
 def delete_account(request):
     if request.method == 'POST':
