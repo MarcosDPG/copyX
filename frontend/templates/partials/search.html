@@ -1,28 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   {% load static %}
-   <link rel="stylesheet" href="{% static 'css/search.css' %}">
-</head>
-
-<body>
-   <div class="search-container">
-      <form method="get" id="search-form">
-         <fieldset>
-            <div>
-               <input type="text" name="search_users" class="search-input" placeholder="Buscar..." />
-               <button id="bt-buscar" class="search-button">
-                  <span alt="buscar" class="search-icon">
-                     {% include 'icons/lupa.svg' %}
-                  </span>
-              </button>
-            </div>
-         </fieldset>
-      </form>
-      <div id="post_container" class="search-results">
-         {% include 'icons/spinner.html' %}
-     </div>
-</body>
-</html>
+<div class="search-container">
+   <form method="get" id="search-form">
+      <fieldset>
+         <div>
+            <input type="text" name="search_users" class="search-input" placeholder="Buscar..." />
+            <button id="bt-buscar" class="search-button">
+               <span alt="buscar" class="search-icon">
+                  {% include 'icons/lupa.svg' %}
+               </span>
+           </button>
+         </div>
+      </fieldset>
+   </form>
+   <div id="post_container" class="search-results">
+      {% include 'icons/spinner.html' %}
+  </div>
