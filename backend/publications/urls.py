@@ -8,5 +8,6 @@ urlpatterns = [
     path('retweet/<str:retweet_id>', views.retweet_operations, name="retweet-delete"),
     path('users/retweets/', views.retrieve_retweet_info, name="retweet-user"),
     path('comments/', views.comment_operations, name="comment"),
-    path('comments/<str:comment_id>', views.comment_operations, name="comment-delete")
+    path('comments/<str:comment_id>', views.comment_operations, name="comment-delete"),
+    path('comments/tweet/<str:tweet_id>', views.comment_operations, name="tweet-comment"),
 ]

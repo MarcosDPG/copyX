@@ -84,7 +84,7 @@ def retweet_operations(request, retweet_id=None):
 @api_view(['GET','POST','DELETE'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
-def comment_operations(request, comment_id=None):
+def comment_operations(request, comment_id=None, tweet_id=None):
     user = request.user
     if request.method == 'POST':
         commentSerializer = CommentSerializer(data=request.data)
@@ -100,6 +100,21 @@ def comment_operations(request, comment_id=None):
             return Response({"message": "Comentario eliminado"}, status=status.HTTP_200_OK)
         except Comment.DoesNotExist:
             return Response({"Error": "El comentario no existe"}, status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'GET':
+        #try:
+        comments = Comment.objects.filter(tweet_id=tweet_id).order_by('-created_at').select_related('user')
+        contentType = ContentType.objects.get_for_model(Comment)
+        for comment in comments:
+            comment.user_name_commenter = comment.user.user_name
+            comment.user_name = comment.user.name
+            comment.delta_created = get_delta_created(comment.created_at)
+            comment.like_count = Like.objects.filter(content_type=contentType, object_id=comment.comment_id).count()
+            comment.id_like = Like.objects.filter(content_type=contentType, object_id=comment.comment_id,user=user).values("like_id").first()
+
+        commentSerializer = CommentSerializer(comments, many=True)
+        return Response(commentSerializer.data, status=status.HTTP_200_OK)
+        #except Exception as e:
+         #   return Response({"Error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication])
