@@ -25,7 +25,9 @@ from .serializers import TweetSerializer, RetweetSerializer, CommentSerializer
 def tweet_operations(request, user_id=None, post_id=None, postman=None):
     if request.method == 'GET':
         try:
-            if user_id:
+            if post_id:
+                tweetSerializer = retrieve_information_unique_post(post_id=post_id)
+            elif user_id:
                 tweetSerializer = retrieve_information(user_id=user_id)
             else:
                 tweetSerializer = retrieve_information(user=request.user)
@@ -214,3 +216,30 @@ def retrieve_information(user=None, user_id=None, is_retweet=False, is_posts_lik
 
     # Serialize the sorted tweets
     return TweetSerializer(sorted_tweet_data, many=True)
+
+def retrieve_information_unique_post(post_id=None):
+    try:
+        # Obtener el tweet basado en el post_id
+        tweet = Tweet.objects.get(tweet_id=post_id)
+        
+        # Obtener el contenido tipo para el modelo Tweet
+        tweet_content_type = ContentType.objects.get_for_model(Tweet)
+        
+        # Anotar el tweet con el conteo de comentarios, retweets y likes
+        tweet.comments_count = Comment.objects.filter(tweet=tweet).count()
+        tweet.retweet_count = Retweet.objects.filter(tweet=tweet).count()
+        tweet.like_count = Like.objects.filter(content_type=tweet_content_type, object_id=tweet.tweet_id).count()
+        
+        # Obtener el like del usuario actual si existe
+        user = tweet.user
+        tweet.id_like = Like.objects.filter(content_type=tweet_content_type, object_id=tweet.tweet_id, user=user).values("like_id").first()
+        
+        # Calcular el delta de tiempo creado
+        tweet.delta_created = get_delta_created(tweet.created_at)
+        
+        # Serializar el tweet
+        return TweetSerializer([tweet], many=True)
+    except Tweet.DoesNotExist:
+        raise Exception("El tweet no existe")
+    except Exception as e:
+        raise Exception(f"Error al recuperar el tweet: {str(e)}")
