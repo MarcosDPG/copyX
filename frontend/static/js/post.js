@@ -89,6 +89,20 @@ function repostController(obj) {
     }
 }
 
+function commentController(obj) {
+    path = window.location.pathname;
+    if (path.startsWith("/") && path.length > 1) {
+        path = `/${path.split("/")[1]}/`
+    }
+    if (path.endsWith("/") && path.length > 1) {
+        path = path.slice(0, -1);
+    }
+    if (window.location.pathname != '/post') {
+        url = `/post/${obj.getAttribute('id-post')}`
+        changeContent(url)
+    }
+}
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {

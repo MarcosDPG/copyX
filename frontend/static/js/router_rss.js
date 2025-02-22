@@ -2,10 +2,10 @@ function loadResources(path="") {
     if (path.endsWith("/") && path.length > 1) {
         path = path.slice(0, -1);
     }
-    user_id =  ""
-    if (path.startsWith("/profile") && !path.endsWith("/profile")) {
-        user_id = path.split("/")[2]
-        path = "/profile/"
+    id =  ""
+    if ((path.startsWith("/profile") && !path.endsWith("/profile")) || (path.startsWith("/post") && !path.endsWith("/post"))) {
+        id = path.split("/")[2]
+        path = `/${path.split("/")[1]}/`
     }
     switch (path) {
         case "/":
@@ -35,13 +35,13 @@ function loadResources(path="") {
         case "/profile/":
             switch (OptionSelected) {
                 case 0:
-                    fetchTweets(user_id)
+                    fetchTweets(id)
                     break;
                 case 1:
-                    fetchRetweets(user_id)
+                    fetchRetweets(id)
                     break;
                 case 2:
-                    fetchLikes(user_id)
+                    fetchLikes(id)
                     break;
                 default:
                     break;
@@ -52,6 +52,10 @@ function loadResources(path="") {
             break;
         case "/search":
             loadUsers()
+            break;
+        case "/post/":
+            loadPost(id)
+            break;
         default:
             break;
     }
@@ -110,6 +114,16 @@ function toggleSelection(obj) {
 
 function loadUsers() {
     fetch(`/users/`, { credentials: "include" })
+    .then(response => response.text())
+    .then(html => {
+        const container = document.getElementById("post_container");
+        container.innerHTML = html;
+    })
+    .catch(error => console.error("Error cargando datos:", error));
+}
+
+function loadPost(post_id) {
+    fetch(`/tweets/post/${post_id}`, { credentials: "include" })
     .then(response => response.text())
     .then(html => {
         const container = document.getElementById("post_container");
