@@ -133,7 +133,7 @@ def retrieve_retweet_info(request, user_id):
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
-def retrieve_liked_post(user_id):
+def retrieve_liked_post(request, user_id):
     user = User.objects.get(user_id=user_id)
     tweetSerializer = retrieve_information(user=user, is_posts_liked=True)
     tweet_data = json.loads(json.dumps(tweetSerializer.data, default=str))
