@@ -38,8 +38,8 @@ class RetweetSerializer(serializers.ModelSerializer):
         extra_kwargs = {"tweet": {"write_only": True}}
 
 class CommentSerializer(serializers.ModelSerializer):
-    user_name_commenter = serializers.CharField()
-    user_name = serializers.CharField(read_only=True)
+    user_name_commenter = serializers.CharField(read_only=True)
+    name = serializers.CharField(read_only=True)
     user_id = serializers.UUIDField(read_only=True)
     delta_created = serializers.CharField(read_only=True)
     id_like = serializers.UUIDField(read_only=True)
@@ -47,5 +47,5 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ["tweet", "content", "comment_id","user_name_commenter","user_name","user_id", "delta_created", "id_like", "like_count"]
+        fields = ["tweet", "content", "comment_id","user_name_commenter","name","user_id", "delta_created", "id_like", "like_count"]
         extra_kwargs = {"tweet": {"write_only": True}}

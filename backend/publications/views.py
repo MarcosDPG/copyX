@@ -165,13 +165,14 @@ def comment_operations(request, comment_id=None, tweet_id=None):
         contentType = ContentType.objects.get_for_model(Comment)
         for comment in comments:
             comment.user_name_commenter = comment.user.user_name
-            comment.user_name = comment.user.name
+            comment.name = comment.user.name
             comment.delta_created = get_delta_created(comment.created_at)
             comment.like_count = Like.objects.filter(content_type=contentType, object_id=comment.comment_id).count()
             comment.id_like = Like.objects.filter(content_type=contentType, object_id=comment.comment_id,user=user).values("like_id").first()
 
         commentSerializer = CommentSerializer(comments, many=True)
-        return Response(commentSerializer.data, status=status.HTTP_200_OK)
+        tweet_data = json.loads(json.dumps(commentSerializer.data, default=str))
+        return render(request, "partials/posts_list.html", {"posts": tweet_data, "empty_message": "No post yet..."})
         #except Exception as e:
          #   return Response({"Error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

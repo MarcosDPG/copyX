@@ -12,7 +12,7 @@
     <div class="content_post_container">
         <div class="data_user_content_post_container">
             <p class="name">{{ tweet.name }}</p>
-            <a href="{% url 'profile_auth' %}{{ tweet.user_id }}" class="username">@{{ tweet.user_name }}</a>
+            <a href="{% url 'profile_auth' %}{{ tweet.user_id }}" class="username">@{% if tweet.user_name_commenter %}{{ tweet.user_name_commenter }}{% else %}{{ tweet.user_name }}{% endif %}</a>
             <p class="delta_created_time">{{ tweet.delta_created }}</p>
         </div>
         <div class="message_content_post_container">
@@ -35,7 +35,7 @@
             </div>
             {% endif %}
             <div>
-                <div class="{% if tweet.id_like %}liked{% endif %}" type-post="{% if tweet.user_name_commenter %}1{% else %}0{% endif %}" id-post="{{ tweet.tweet_id }}" id-like="{% if tweet.id_like %}{{ tweet.id_like }}{% endif %}" onclick="javascript:likeController(this)">
+                <div class="{% if tweet.id_like %}liked{% endif %}" type-post="{% if tweet.user_name_commenter %}1{% else %}0{% endif %}" id-post="{% if tweet.comment_id %}{{ tweet.comment_id }}{% else %}{{ tweet.tweet_id }}{% endif %}" id-like="{% if tweet.id_like %}{{ tweet.id_like }}{% endif %}" onclick="javascript:likeController(this)">
                     {% include 'icons/like.html' %}
                 </div>
                 <p class="likes_count">{{ tweet.like_count }}</p>

@@ -128,6 +128,13 @@ function loadPost(post_id) {
     .then(html => {
         const container = document.getElementById("post_container");
         container.innerHTML = html;
+        fetch(`/comments/tweet/${post_id}`, { credentials: "include" })
+        .then(response => response.text())
+        .then(html => {
+            const container = document.getElementById("comments_container");
+            container.innerHTML = html;
+        })
+        .catch(error => console.error("Error cargando datos:", error));
     })
     .catch(error => console.error("Error cargando datos:", error));
 }

@@ -79,7 +79,6 @@ function activeRequestPostCompose() {
                 formData = JSON.stringify({tweet: document.querySelector('div[id-post]').getAttribute('id-post'), content: content});
                 headers["Content-Type"] = "application/json";
             }
-            console.log(formData);
 
             fetch(this.action, {
                 method: this.method,
