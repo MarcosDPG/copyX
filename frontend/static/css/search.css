@@ -2,7 +2,7 @@
     width: 97%;
     margin-top: 1%;
     margin-left: 1.4%;
-    margin-right: 0%;
+    margin-right: 1.4%;
   }
 
   .search-container form > fieldset > div {
@@ -74,25 +74,71 @@
 
 .search-results {
   margin-top: 20px;
-  display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: center;
-  align-items: flex-start;
   padding: 20px;
   width: 100%;
   box-sizing: border-box;
 }
 
-.user-card {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  width: 200px;
-}
-
 .search-form {
   flex-direction: row;
+}
+
+.post_container{
+  display: flex;
+  width: 100%;
+}
+
+/* */
+
+.user-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: rgb(17, 17, 17);
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  width: 40%;
+  border: 0.05px solid white;
+  gap: 30px; /* Espacio entre la imagen y el texto */
+  text-align: left;
+}
+
+.user-card .user_image {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-card div {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .user-card {
+    width: 40%;
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center;
+    gap: 10px;
+  }
+
+  .user-card .user_image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .user-card div {
+    align-items: center;
+  }
+
+  .user-actions {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
 }
