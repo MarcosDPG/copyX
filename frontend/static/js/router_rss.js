@@ -16,10 +16,6 @@ function loadResources(path="") {
             break;
         case "/compose/post":
             history.back()
-            setTimeout(() => {
-                loadResources(window.location.pathname);
-            }, 100);
-            loadResources(path)
             break;
         case "/profile":
             switch (OptionSelected) {
